@@ -11,5 +11,8 @@
   },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "scripts": {
+    "start": "npx lerna run start"
+  }
 }

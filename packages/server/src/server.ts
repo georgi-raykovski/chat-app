@@ -11,7 +11,7 @@ export interface QueryPayload {
 }
 
 app.get('/data', (req, res) => {
-  const data: QueryPayload = { foo: 'bar' };
+  const data: QueryPayload = { foo: 'barak' };
   res.json(data);
 });
 

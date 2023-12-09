@@ -13,17 +13,19 @@ export const LoginForm = ({ loginClickHandler }: ILoginFormProps) => {
   };
 
   const onClickHandler = React.useCallback(() => {
-    loginClickHandler(inputValue);
+    if (inputValue.trim() !== '') {
+      loginClickHandler(inputValue);
+    }
   }, [inputValue, loginClickHandler]);
 
   return (
     <LoginFormSection>
       <FlexContainer>
         <LoginFormContainer>
-          <h1 className="header">Welcome to YearsChat!</h1>
+          <h1 className="login-form__header">Welcome to YearsChat!</h1>
           <p>Please enter your name below and click "Log in"</p>
         </LoginFormContainer>
-        <LoginFormContainer className="input">
+        <LoginFormContainer className="login-form__input-container">
           <Input
             type="text"
             id="username"

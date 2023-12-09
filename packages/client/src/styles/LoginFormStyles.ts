@@ -8,13 +8,13 @@ export const LoginFormSection = styled.section`
   flex-direction: column;
   font-size: 1.25rem;
 
-  .header {
+  .login-form__header {
     text-align: center;
   }
 `;
 
 export const LoginFormContainer = styled.div`
-  &.input {
+  &.login-form__input-container {
     display: flex;
     flex-direction: column;
     gap: 20px;

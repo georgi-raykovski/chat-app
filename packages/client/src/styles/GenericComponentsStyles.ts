@@ -3,18 +3,19 @@ import styled from 'styled-components';
 export const Input = styled.input`
   padding: 12px;
   border-radius: 8px;
-  border: 0.5px solid rgba(0, 0, 0, 0.2);
-  transition: border-color 0.5s ease;
-  background-color: #fff;
+  border: ${({ theme }) => theme.input.border};
+  transition: all 0.5s ease;
+  background-color: ${({ theme }) => theme.input.bgColor};
+  color: ${({ theme }) => theme.textColor};
 
   &::placeholder {
-    color: rgba(0, 0, 0, 0.7);
+    color: ${({ theme }) => theme.input.placeholderColor};
   }
 
   &:focus {
     outline: none;
-    border-color: #ffa511; /* Adjust color to match your design */
-    box-shadow: 0 0 5px rgba(255, 165, 17, 0.5); /* Optional: Add a subtle box-shadow */
+    border-color: #ffa511;
+    box-shadow: 0 0 5px rgba(255, 165, 17, 0.5);
   }
 `;
 

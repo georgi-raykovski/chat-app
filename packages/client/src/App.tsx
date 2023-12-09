@@ -1,18 +1,16 @@
 import React from 'react';
-import { QueryPayload } from 'server';
+import { LoginForm, Chat } from './components';
+import { GlobalStyles } from './styles';
+import useAuth from './hooks/useAuth';
 
 const App = () => {
-  const a = 'aa';
+  const { username, isUserLoggedIn, login, logout } = useAuth();
+
   return (
     <div className="App">
-      <button
-        onClick={() => {
-          fetch('http://localhost:3001/data', {})
-            .then((res) => res.json())
-            .then((data: QueryPayload) => console.log(data.foo));
-        }}>
-        Click me
-      </button>
+      <GlobalStyles />
+      {!isUserLoggedIn && <LoginForm loginClickHandler={login} />}
+      {isUserLoggedIn && <Chat username={username} logoutClickHandler={logout} />}
     </div>
   );
 };

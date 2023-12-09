@@ -8,9 +8,10 @@
     "standard",
     "prettier",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
+    "plugin:react/recommended"
   ],
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "react", "node", "promise"],
   "env": {
     "es6": true,
     "node": true

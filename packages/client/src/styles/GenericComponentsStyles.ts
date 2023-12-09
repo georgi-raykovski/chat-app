@@ -5,6 +5,7 @@ export const Input = styled.input`
   border-radius: 8px;
   border: 0.5px solid rgba(0, 0, 0, 0.2);
   transition: border-color 0.5s ease;
+  background-color: #fff;
 
   &::placeholder {
     color: rgba(0, 0, 0, 0.7);
@@ -30,6 +31,13 @@ export const Button = styled.button`
   &:hover {
     background-color: #e59400;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  &.toggle {
+    position: absolute;
+    padding: 12px;
+    left: 5%;
+    top: 90%;
   }
 `;
 

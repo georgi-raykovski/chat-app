@@ -7,6 +7,7 @@ export const LoginFormSection = styled.section`
   align-items: center;
   flex-direction: column;
   font-size: 1.25rem;
+  color: ${({ theme }) => theme.textColor};
 
   .login-form__header {
     text-align: center;

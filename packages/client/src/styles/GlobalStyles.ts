@@ -1,11 +1,15 @@
 import { reset } from 'react-style-reset';
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
   ${reset}
 
-  div.App {
+  body {
     font-family: sans-serif;
-    background-color: #e5f7e4;
-  }
+    }
+`;
+
+export const Container = styled.div`
+  background-color: ${({ theme }) => theme.bodyBgColor};
+  transition: background-color 0.5s ease;
 `;

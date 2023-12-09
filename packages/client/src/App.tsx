@@ -1,9 +1,10 @@
 import React from 'react';
 import { QueryPayload } from 'server';
 
-function App() {
+const App = () => {
+  const a = 'aa';
   return (
-    <div className='App'>
+    <div className="App">
       <button
         onClick={() => {
           fetch('http://localhost:3001/data', {})
@@ -14,6 +15,6 @@ function App() {
       </button>
     </div>
   );
-}
+};
 
 export default App;

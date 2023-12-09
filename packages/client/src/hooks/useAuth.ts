@@ -18,7 +18,7 @@ const useAuth = () => {
     setUsername('');
     setIsUserLoggedIn(false);
     localStorage.setItem(USER_LOGGED_IN_KEY, 'false');
-    localStorage.setItem(USERNAME_KEY, username);
+    localStorage.setItem(USERNAME_KEY, '');
   };
 
   useEffect(() => {

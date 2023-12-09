@@ -6,5 +6,6 @@ export const GlobalStyles = createGlobalStyle`
 
   div.App {
     font-family: sans-serif;
+    background-color: #e5f7e4;
   }
 `;

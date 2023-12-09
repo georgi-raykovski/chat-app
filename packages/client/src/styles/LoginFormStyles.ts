@@ -10,6 +10,7 @@ export const LoginFormSection = styled.section`
 
   .login-form__header {
     text-align: center;
+    margin-bottom: 6px;
   }
 `;
 

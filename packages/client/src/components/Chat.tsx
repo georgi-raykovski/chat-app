@@ -6,6 +6,9 @@ interface IChatProps {
   logoutClickHandler: () => void;
 }
 
+// TODO Style page
+// TODO Add backend user/messages logic
+
 export const Chat = ({ username, logoutClickHandler }: IChatProps) => {
   const onLogOutClick = React.useCallback(() => {
     logoutClickHandler();

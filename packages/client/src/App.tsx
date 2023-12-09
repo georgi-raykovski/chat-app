@@ -4,6 +4,8 @@ import { Theme, Button, GlobalStyles } from './styles';
 import useAuth from './hooks/useAuth';
 import { ThemeProvider } from 'styled-components';
 
+// TODO Make Theme persist
+
 const App = () => {
   const { username, isUserLoggedIn, login, logout } = useAuth();
   const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);

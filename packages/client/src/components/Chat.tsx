@@ -10,8 +10,6 @@ interface IChatProps {
 }
 
 // TODO Add backend user/messages logic
-// TODO chat body
-// TODO chat text field
 
 export const Chat = ({ logoutClickHandler }: IChatProps) => {
   const [messages, setMessages] = React.useState<IMessage[]>(mockMessages);

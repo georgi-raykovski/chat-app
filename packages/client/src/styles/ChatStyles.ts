@@ -106,5 +106,4 @@ export const ChatMessageEditorContainer = styled.div`
   position: relative;
   display: flex;
   flex: 1;
-  border-radius: 8px;
 `

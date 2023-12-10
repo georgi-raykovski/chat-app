@@ -38,6 +38,7 @@ export const Button = styled.button`
     position: absolute;
     left: 5%;
     top: 90%;
+    z-index: 3;
   }
 
   &.editor-button {
@@ -45,7 +46,7 @@ export const Button = styled.button`
     top: 95%;
     right: 1%;
     transform: translateY(-100%);
-    padding: 10px 40px;
+    padding: 8px 40px;
   }
 `;
 
@@ -80,7 +81,7 @@ export const TextBox = styled.div`
     border: none;
     outline: none;
     box-sizing: border-box;
-    height: 100%;
+    height: 80%;
     width: 100%;
     word-wrap: break-word;
     resize: none;

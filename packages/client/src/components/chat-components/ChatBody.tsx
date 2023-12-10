@@ -1,6 +1,7 @@
 import React from 'react';
 import { Message } from './Message';
 import { IMessage } from './types';
+import { StyledChatBody } from '../../styles';
 
 interface IChatBodyProps {
   messages: IMessage[];
@@ -8,10 +9,10 @@ interface IChatBodyProps {
 
 export const ChatBody = ({ messages }: IChatBodyProps) => {
   return (
-    <div>
+    <StyledChatBody>
       {messages.map((message) => (
         <Message key={Math.random()} {...message} />
       ))}
-    </div>
+    </StyledChatBody>
   );
 };

@@ -1,20 +1,13 @@
 import React from 'react';
 import { LoginForm, Chat, MainContainer } from './components';
-import { Theme, Button, GlobalStyles } from './styles';
+import { Button, GlobalStyles } from './styles';
 import useAuth from './hooks/useAuth';
 import { ThemeProvider } from 'styled-components';
-
-// TODO Make Theme persist
+import { useTheme } from './hooks/useTheme';
 
 const App = () => {
   const { username, isUserLoggedIn, login, logout } = useAuth();
-  const [isDarkMode, setIsDarkMode] = React.useState<boolean>(false);
-
-  const onThemeSwitchHandler = () => {
-    setIsDarkMode((value) => !value);
-  };  
-
-  const currentTheme = isDarkMode ? Theme['dark'] : Theme['light'];
+  const { currentTheme, onThemeSwitchHandler } = useTheme();
 
   return (
     <ThemeProvider theme={currentTheme}>

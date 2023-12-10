@@ -1,25 +1,34 @@
 import React from 'react';
 import { ChatContainer } from '../styles';
-import { ChatHeader } from './chat-components';
+import { ChatHeader, ChatMessageEditor } from './chat-components';
+import { ChatBody } from './chat-components/ChatBody';
+import { IMessage } from './chat-components/types';
+import { mockMessages } from '../mocks';
 
 interface IChatProps {
-  username: string;
   logoutClickHandler: () => void;
 }
 
 // TODO Add backend user/messages logic
-// TODO chat header
 // TODO chat body
 // TODO chat text field
 
-export const Chat = ({ username, logoutClickHandler }: IChatProps) => {
+export const Chat = ({ logoutClickHandler }: IChatProps) => {
+  const [messages, setMessages] = React.useState<IMessage[]>(mockMessages);
+
   const onLogOutClick = React.useCallback(() => {
     logoutClickHandler();
   }, [logoutClickHandler]);
 
+  const createNewMessage = (message: IMessage) => {
+    setMessages((prevValue) => [...prevValue, message]);
+  };
+
   return (
     <ChatContainer>
-      <ChatHeader username={username} onLogOutClick={onLogOutClick} />
+      <ChatHeader onLogOutClick={onLogOutClick} />
+      <ChatBody messages={messages} />
+      <ChatMessageEditor createNewMessage={createNewMessage} />
     </ChatContainer>
   );
 };

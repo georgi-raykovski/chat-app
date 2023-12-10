@@ -1,24 +1,27 @@
 import React from 'react';
-import { LoginForm, Chat, MainContainer } from './components';
+import { LoginForm, Chat, MainContainer, UsernameProvider } from './components';
 import { Button, GlobalStyles } from './styles';
-import useAuth from './hooks/useAuth';
 import { ThemeProvider } from 'styled-components';
-import { useTheme } from './hooks/useTheme';
+import { useTheme, useAuth } from './hooks';
+
+// TODO Add login form submit on enter
 
 const App = () => {
-  const { username, isUserLoggedIn, login, logout } = useAuth();
+  const { isUserLoggedIn, login, logout } = useAuth();
   const { currentTheme, onThemeSwitchHandler } = useTheme();
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <MainContainer>
-        <GlobalStyles />
-        <Button className="toggle" onClick={onThemeSwitchHandler}>
-          Switch Theme
-        </Button>
-        {!isUserLoggedIn && <LoginForm loginClickHandler={login} />}
-        {isUserLoggedIn && <Chat username={username} logoutClickHandler={logout} />}
-      </MainContainer>
+      <UsernameProvider>
+        <MainContainer>
+          <GlobalStyles />
+          <Button className="toggle" onClick={onThemeSwitchHandler}>
+            Switch Theme
+          </Button>
+          {!isUserLoggedIn && <LoginForm loginClickHandler={login} />}
+          {isUserLoggedIn && <Chat logoutClickHandler={logout} />}
+        </MainContainer>
+      </UsernameProvider>
     </ThemeProvider>
   );
 };

@@ -9,7 +9,7 @@ export const StyledChatHeader = styled.div`
   background-color: #ffa511;
   display: flex;
   justify-content: space-between;
-  padding: 20px 30px;
+  padding: 16px 30px;
   color: #fff;
 
   h2 {

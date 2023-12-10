@@ -1,12 +1,14 @@
 import React from 'react';
 import { FadedSpan, Bold, StyledChatHeader, Button } from '../../styles';
+import { useUsername } from '../context';
 
 interface IChatHeaderProps {
-  username: string;
   onLogOutClick: () => void;
 }
 
-export const ChatHeader = ({ username, onLogOutClick }: IChatHeaderProps) => {
+export const ChatHeader = ({ onLogOutClick }: IChatHeaderProps) => {
+  const { username } = useUsername();
+
   return (
     <StyledChatHeader>
       <h2>
@@ -16,4 +18,3 @@ export const ChatHeader = ({ username, onLogOutClick }: IChatHeaderProps) => {
     </StyledChatHeader>
   );
 };
- 

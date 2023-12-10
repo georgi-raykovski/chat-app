@@ -39,6 +39,14 @@ export const Button = styled.button`
     left: 5%;
     top: 90%;
   }
+
+  &.editor-button {
+    position: absolute;
+    top: 95%;
+    right: 1%;
+    transform: translateY(-100%);
+    padding: 10px 40px;
+  }
 `;
 
 export const FlexContainer = styled.div`
@@ -57,3 +65,26 @@ export const Bold = styled.b`
 export const FadedSpan = styled.span`
   opacity: 0.8;
 `
+
+export const TextBox = styled.div`
+  border: 1px solid green;
+  padding: 10px;
+  background-color: white;
+  flex: 1;
+  border-radius: 8px;
+  position: relative;
+  box-sizing: border-box;
+
+  textarea {
+    padding: 10px;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    height: 100%;
+    width: 100%;
+    word-wrap: break-word;
+    resize: none;
+    white-space: pre-wrap;
+    overflow: scroll;
+  }
+`;

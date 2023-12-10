@@ -7,6 +7,8 @@ interface StyledMessageProps {
 export const ChatContainer = styled.section`
   height: 100vh;
   color: ${({ theme }) => theme.textColor};
+  display: flex;
+  flex-direction: column;
 `;
 
 export const StyledChatHeader = styled.div`
@@ -60,6 +62,7 @@ export const StyledChatBody = styled.div`
   padding: 0 24px;
   max-height: 60%;
   overflow-y: scroll;
+  margin-bottom: 30px;
   &::-webkit-scrollbar {
     width: 10px; /* Set the width of the scrollbar */
   }
@@ -97,3 +100,11 @@ export const ActionButtons = styled.div`
     padding: 5px 10px;
   }
 `;
+
+export const ChatMessageEditorContainer = styled.div`
+  padding: 20px 40px;
+  position: relative;
+  display: flex;
+  flex: 1;
+  border-radius: 8px;
+`

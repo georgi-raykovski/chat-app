@@ -8,9 +8,9 @@ export const LoginFormSection = styled.section`
   flex-direction: column;
   font-size: 1.25rem;
   color: ${({ theme }) => theme.textColor};
+  text-align: center;
 
   .login-form__header {
-    text-align: center;
     margin-bottom: 6px;
   }
 `;

@@ -21,7 +21,7 @@ export const Input = styled.input`
 
 export const Button = styled.button`
   font-size: 1rem;
-  padding: 12px 0;
+  padding: 12px;
   background-color: #ffa511;
   border-radius: 8px;
   border-width: 0;
@@ -36,7 +36,6 @@ export const Button = styled.button`
 
   &.toggle {
     position: absolute;
-    padding: 12px;
     left: 5%;
     top: 90%;
   }
@@ -50,3 +49,11 @@ export const FlexContainer = styled.div`
   gap: 32px;
   max-width: max-content;
 `;
+
+export const Bold = styled.b`
+  font-weight: 600;
+`
+
+export const FadedSpan = styled.span`
+  opacity: 0.8;
+`

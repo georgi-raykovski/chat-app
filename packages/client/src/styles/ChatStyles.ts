@@ -25,7 +25,7 @@ export const StyledChatHeader = styled.div`
 
 export const StyledMessage = styled.div<StyledMessageProps>`
   width: 80%;
-  margin: 15px;
+  padding: 16px 0;
   align-self: ${(props) => (props.$isFromCurrentUser ? 'start' : 'end')};
   h3 {
     text-align: ${(props) => (props.$isFromCurrentUser ? 'left' : 'right')};
@@ -59,7 +59,7 @@ export const MessageHeader = styled.h3`
 export const StyledChatBody = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0 24px;
+  padding: 0 20px;
   height: 60%;
   overflow-y: scroll;
   margin-bottom: 30px;
@@ -75,6 +75,10 @@ export const StyledChatBody = styled.div`
 
   &::-webkit-scrollbar-corner {
     background-color: #555;
+  }
+
+  @media (min-width: 400px) {
+    padding: 0px 40px;
   }
 `;
 
@@ -99,8 +103,12 @@ export const ActionButtons = styled.div`
 `;
 
 export const ChatMessageEditorContainer = styled.div`
-  padding: 20px 40px;
+  padding: 10px 20px;
   position: relative;
   display: flex;
   flex: 1;
+
+  @media (min-width: 400px) {
+    padding: 20px 40px;
+  }
 `

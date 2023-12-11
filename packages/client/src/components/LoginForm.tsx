@@ -31,7 +31,7 @@ export const LoginForm = ({ loginClickHandler, switchTheme }: ILoginFormProps) =
 
   return (
     <LoginFormSection>
-      <FlexContainer>
+      <FlexContainer className='login-form'>
         <LoginFormContainer>
           <h1 className="login-form__header">Welcome to YearsChat!</h1>
           <p>Please enter your name below and click "Log in"</p>

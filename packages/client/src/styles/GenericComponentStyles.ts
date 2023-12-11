@@ -41,30 +41,29 @@ export const Button = styled.button`
   }
 
   &.editor-button {
-    position: absolute;
-    top: 95%;
-    right: 1%;
-    transform: translateY(-100%);
     padding: 8px 40px;
   }
 `;
 
 export const FlexContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 32px;
-  max-width: max-content;
+
+  &.login-form {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 32px;
+    max-width: max-content;
+  }
 `;
 
 export const Bold = styled.b`
   font-weight: 600;
-`
+`;
 
 export const FadedSpan = styled.span`
   opacity: 0.8;
-`
+`;
 
 export const TextBox = styled.div`
   border: 1px solid green;
@@ -72,19 +71,17 @@ export const TextBox = styled.div`
   background-color: white;
   flex: 1;
   border-radius: 8px;
-  position: relative;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
 
   textarea {
-    padding: 10px;
     border: none;
-    outline: none;
     box-sizing: border-box;
-    height: 80%;
+    height: 100%;
     width: 100%;
-    word-wrap: break-word;
     resize: none;
-    white-space: pre-wrap;
-    overflow: scroll;
   }
 `;

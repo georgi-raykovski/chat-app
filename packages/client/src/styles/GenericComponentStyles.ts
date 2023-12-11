@@ -84,6 +84,11 @@ export const TextBox = styled.div`
     height: 100%;
     width: 100%;
     resize: none;
-    background-color: ${({ theme }) => theme.input.bgColor};
+    background-color: transparent;
+    color: ${({ theme }) => theme.textColor};
+    
+    &::placeholder {
+      color: ${({ theme }) => theme.textColor};
+    }
   }
 `;

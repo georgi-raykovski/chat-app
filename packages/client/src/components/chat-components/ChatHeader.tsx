@@ -15,7 +15,7 @@ export const ChatHeader = ({ onLogOutClick, switchTheme }: IChatHeaderProps) => 
       <h2>
         <Bold>YearsChat</Bold>,<FadedSpan> logged in as {username} </FadedSpan>
       </h2>
-      <FlexContainer>
+      <FlexContainer className="chat-header">
         <Button onClick={switchTheme}>Switch Theme</Button>
         <Button onClick={onLogOutClick}>Log out</Button>
       </FlexContainer>

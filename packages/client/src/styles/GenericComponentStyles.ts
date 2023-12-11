@@ -55,6 +55,10 @@ export const FlexContainer = styled.div`
     gap: 32px;
     max-width: max-content;
   }
+
+  &.chat-header {
+    flex: 0;
+  }
 `;
 
 export const Bold = styled.b`
@@ -86,7 +90,7 @@ export const TextBox = styled.div`
     resize: none;
     background-color: transparent;
     color: ${({ theme }) => theme.textColor};
-    
+
     &::placeholder {
       color: ${({ theme }) => theme.textColor};
     }

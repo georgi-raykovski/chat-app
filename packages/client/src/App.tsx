@@ -4,7 +4,6 @@ import { Button, GlobalStyles } from './styles';
 import { ThemeProvider } from 'styled-components';
 import { useTheme, useAuth } from './hooks';
 
-// TODO Add login form submit on enter / Same for textarea
 // TODO Fine tune responsive design
 
 const App = () => {

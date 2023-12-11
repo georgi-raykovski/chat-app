@@ -18,6 +18,16 @@ export const LoginForm = ({ loginClickHandler }: ILoginFormProps) => {
     }
   }, [inputValue, loginClickHandler]);
 
+  const onEnter = React.useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === 'Enter' && e.shiftKey === false) {
+        e.preventDefault();
+        onClickHandler();
+      }
+    },
+    [onClickHandler]
+  );
+
   return (
     <LoginFormSection>
       <FlexContainer>
@@ -30,6 +40,7 @@ export const LoginForm = ({ loginClickHandler }: ILoginFormProps) => {
             type="text"
             id="username"
             onChange={(event) => onChangeInputHandler(event.target.value)}
+            onKeyDown={onEnter}
             value={inputValue}
             placeholder="Name"
           />

@@ -12,16 +12,16 @@ export const Message = ({ content, datetime, username }: IMessageProps) => {
   const isFromCurrentUser = currentUser === username;
 
   return (
-    <StyledMessage isFromCurrentUser={isFromCurrentUser}>
+    <StyledMessage $isFromCurrentUser={isFromCurrentUser}>
       <MessageHeader>
         {username}, {datetime.toLocaleTimeString(undefined, dataOptions)}
       </MessageHeader>
       <MessageBody>
-        {content} {isFromCurrentUser && 'same user'}
-      <ActionButtons className="action-buttons">
-        <Button type='button'>Edit</Button>
-        <Button type='button'>Delete</Button>
-      </ActionButtons>
+        {content}
+        <ActionButtons className="action-buttons">
+          <Button type="button">Edit</Button>
+          <Button type="button">Delete</Button>
+        </ActionButtons>
       </MessageBody>
     </StyledMessage>
   );

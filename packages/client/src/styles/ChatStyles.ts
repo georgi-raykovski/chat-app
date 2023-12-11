@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface StyledMessageProps {
-  isFromCurrentUser: boolean;
+  $isFromCurrentUser: boolean;
 }
 
 export const ChatContainer = styled.section`
@@ -26,13 +26,13 @@ export const StyledChatHeader = styled.div`
 export const StyledMessage = styled.div<StyledMessageProps>`
   width: 80%;
   margin: 15px;
-  align-self: ${(props) => (props.isFromCurrentUser ? 'start' : 'end')};
+  align-self: ${(props) => (props.$isFromCurrentUser ? 'start' : 'end')};
   h3 {
-    text-align: ${(props) => (props.isFromCurrentUser ? 'left' : 'right')};
+    text-align: ${(props) => (props.$isFromCurrentUser ? 'left' : 'right')};
   }
 
   div {
-    background-color: ${(props) => (props.isFromCurrentUser ? '#1a82fd' : '#888888')};
+    background-color: ${(props) => (props.$isFromCurrentUser ? '#1a82fd' : '#888888')};
   }
 `;
 
@@ -60,7 +60,7 @@ export const StyledChatBody = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 24px;
-  max-height: 60%;
+  height: 60%;
   overflow-y: scroll;
   margin-bottom: 30px;
   &::-webkit-scrollbar {

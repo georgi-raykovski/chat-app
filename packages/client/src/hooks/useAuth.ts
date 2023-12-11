@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 import { useUsername } from '../components';
 
 const USER_LOGGED_IN_KEY = 'userLoggedIn';
@@ -12,7 +11,7 @@ const getInitialLoggedInState = (): boolean => {
 
 export const useAuth = () => {
   const { username, setUsername } = useUsername();
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(getInitialLoggedInState);
+  const [isUserLoggedIn, setIsUserLoggedIn] = React.useState<boolean>(getInitialLoggedInState);
 
   const login = (value: string) => {    
     setUsername(value);

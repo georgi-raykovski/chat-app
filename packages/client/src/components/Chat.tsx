@@ -1,9 +1,8 @@
 import React from 'react';
 import { ChatContainer } from '../styles';
-import { ChatHeader, ChatMessageEditor } from './chat-components';
-import { ChatBody } from './chat-components/ChatBody';
-import { IMessage } from './chat-components/types';
+import { ChatBody, ChatBodyRefType, ChatHeader, ChatMessageEditor, IMessage } from './chat-components';
 import { mockMessages } from '../mocks';
+import { scrollToBottom } from '../utils';
 
 interface IChatProps {
   logoutClickHandler: () => void;
@@ -13,6 +12,7 @@ interface IChatProps {
 // TODO Add backend user/messages logic
 export const Chat = ({ logoutClickHandler, switchTheme }: IChatProps) => {
   const [messages, setMessages] = React.useState<IMessage[]>(mockMessages);
+  const chatBodyRef = React.useRef<ChatBodyRefType>(null);
 
   const onLogOutClick = () => {
     logoutClickHandler();
@@ -22,10 +22,14 @@ export const Chat = ({ logoutClickHandler, switchTheme }: IChatProps) => {
     setMessages((prevValue) => [...prevValue, message]);
   };
 
+  React.useEffect(() => {
+    scrollToBottom(chatBodyRef);
+  }, [messages]);
+
   return (
     <ChatContainer>
       <ChatHeader onLogOutClick={onLogOutClick} switchTheme={switchTheme} />
-      <ChatBody messages={messages} />
+      <ChatBody messages={messages} containerRef={chatBodyRef} />
       <ChatMessageEditor createNewMessage={createNewMessage} />
     </ChatContainer>
   );

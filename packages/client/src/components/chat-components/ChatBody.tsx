@@ -1,25 +1,48 @@
 import React from 'react';
 import { Message } from './Message';
-import { IMessage } from './types';
+import { ChatBodyRefType, GetMessagePropReqsParams, GetMessagePropReqsReturnType, IMessage } from './types';
 import { StyledChatBody } from '../../styles';
 import { areDatesOneMinuteApart } from '../../utils';
 
 interface IChatBodyProps {
   messages: IMessage[];
+  containerRef: React.MutableRefObject<ChatBodyRefType>;
 }
 
-const shouldHeaderBeOmitted = (firstMessage: IMessage, secondMessage: IMessage): boolean => {
+const getMessagePropRequirements = ({
+  firstMessage,
+  secondMessage,
+  isFirstMessage,
+}: GetMessagePropReqsParams): GetMessagePropReqsReturnType => {
+  if (isFirstMessage) {
+    return {
+      shouldOmitHeader: false,
+      prevMessageIsOneMinuteApart: false,
+      prevMessageIsFromAnotherUser: false,
+    };
+  }
+
   const fromSameUser = firstMessage.username === secondMessage.username;
   const areOneMinuteApart = areDatesOneMinuteApart(firstMessage.datetime, secondMessage.datetime);
+  const prevMessageIsFromAnotherUser = firstMessage.username !== secondMessage.username;
 
-  return fromSameUser && !areOneMinuteApart;
+  return {
+    shouldOmitHeader: fromSameUser && !areOneMinuteApart,
+    prevMessageIsOneMinuteApart: areOneMinuteApart,
+    prevMessageIsFromAnotherUser,
+  };
 };
 
 const messagesMapper = (message: IMessage, idx: number, messagesArray: IMessage[]): JSX.Element => {
   const isFirstMessage = idx < 1;
-  const shouldOmitHeader = isFirstMessage ? false : shouldHeaderBeOmitted(message, messagesArray[idx - 1]);
-  const prevMessageIsFromAnotherUser = isFirstMessage ? false : message.username !== messagesArray[idx - 1].username;
-  const includeZIdx = idx === 0 || shouldOmitHeader || prevMessageIsFromAnotherUser;
+  const previousMessage = messagesArray[idx - 1];
+
+  const { shouldOmitHeader, prevMessageIsOneMinuteApart, prevMessageIsFromAnotherUser } = getMessagePropRequirements({
+    firstMessage: message,
+    secondMessage: previousMessage,
+    isFirstMessage,
+  });
+  const includeZIdx = isFirstMessage || shouldOmitHeader || prevMessageIsFromAnotherUser || prevMessageIsOneMinuteApart;
 
   const additionalProps = {
     shouldOmitHeader,
@@ -29,8 +52,8 @@ const messagesMapper = (message: IMessage, idx: number, messagesArray: IMessage[
   return <Message key={idx} {...message} {...additionalProps} />;
 };
 
-export const ChatBody = ({ messages }: IChatBodyProps) => {
+export const ChatBody = ({ messages, containerRef }: IChatBodyProps) => {
   const mappedMessages = messages.map(messagesMapper);
 
-  return <StyledChatBody>{mappedMessages}</StyledChatBody>;
+  return <StyledChatBody ref={containerRef}>{mappedMessages}</StyledChatBody>;
 };

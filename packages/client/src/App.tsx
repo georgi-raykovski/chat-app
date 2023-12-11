@@ -4,8 +4,6 @@ import { GlobalStyles } from './styles';
 import { ThemeProvider } from 'styled-components';
 import { useTheme, useAuth } from './hooks';
 
-// TODO Fine tune responsive design
-
 const App = () => {
   const { isUserLoggedIn, login, logout } = useAuth();
   const { currentTheme, onThemeSwitchHandler } = useTheme();

@@ -68,7 +68,7 @@ export const StyledChatBody = styled.div`
   flex-direction: column;
   padding: 0 20px;
   height: 60%;
-  overflow-y: scroll;
+  overflow-y: auto;
   margin-bottom: 30px;
 
   &::-webkit-scrollbar {

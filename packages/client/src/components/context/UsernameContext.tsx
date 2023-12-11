@@ -1,16 +1,16 @@
 import React from 'react';
 import { USERNAME_KEY } from '../../hooks';
 
-const defaultUsernameContextValue = {
-  username: '',
-  setUsernameValue: (newUsername: string) => {},
-};
-
-const UsernameContext = React.createContext(defaultUsernameContextValue);
-
 const getInitialUsername = (): string => {
   return localStorage.getItem(USERNAME_KEY) ?? '';
 };
+
+const defaultUsernameContextValue = {
+  username: getInitialUsername(),
+  setUsername: (value: string) => {},
+};
+
+const UsernameContext = React.createContext(defaultUsernameContextValue);
 
 interface IUsernameProviderProps {
   children: React.ReactNode;
@@ -19,13 +19,7 @@ interface IUsernameProviderProps {
 export const UsernameProvider = ({ children }: IUsernameProviderProps) => {
   const [username, setUsername] = React.useState<string>(getInitialUsername);
 
-  const setUsernameValue = (newUsername: string) => {
-    setUsername(newUsername);
-  };
-
-  return <UsernameContext.Provider value={{ username, setUsernameValue }}>{children}</UsernameContext.Provider>;
+  return <UsernameContext.Provider value={{ username, setUsername }}>{children}</UsernameContext.Provider>;
 };
 
-export const useUsername = () => {
-  return React.useContext(UsernameContext);
-};
+export const useUsername = () => React.useContext(UsernameContext);

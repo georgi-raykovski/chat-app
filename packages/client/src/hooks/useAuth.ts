@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { useUsername } from '../components';
 
@@ -10,18 +11,18 @@ const getInitialLoggedInState = (): boolean => {
 };
 
 export const useAuth = () => {
-  const { username, setUsernameValue } = useUsername();
+  const { username, setUsername } = useUsername();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState<boolean>(getInitialLoggedInState);
 
-  const login = (value: string) => {
-    setUsernameValue(value);
+  const login = (value: string) => {    
+    setUsername(value);
     setIsUserLoggedIn(true);
     localStorage.setItem(USER_LOGGED_IN_KEY, 'true');
     localStorage.setItem(USERNAME_KEY, value);
   };
 
   const logout = () => {
-    setUsernameValue('');
+    setUsername('');
     setIsUserLoggedIn(false);
     localStorage.setItem(USER_LOGGED_IN_KEY, 'false');
     localStorage.setItem(USERNAME_KEY, '');

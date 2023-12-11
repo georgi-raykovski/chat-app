@@ -6,11 +6,12 @@ import { IMessage } from './chat-components/types';
 
 interface IChatProps {
   logoutClickHandler: () => void;
+  switchTheme: () => void;
 }
 
 // TODO Add backend user/messages logic
 
-export const Chat = ({ logoutClickHandler }: IChatProps) => {
+export const Chat = ({ logoutClickHandler, switchTheme }: IChatProps) => {
   const [messages, setMessages] = React.useState<IMessage[]>([]);
 
   const onLogOutClick = React.useCallback(() => {
@@ -23,7 +24,7 @@ export const Chat = ({ logoutClickHandler }: IChatProps) => {
 
   return (
     <ChatContainer>
-      <ChatHeader onLogOutClick={onLogOutClick} />
+      <ChatHeader onLogOutClick={onLogOutClick} switchTheme={switchTheme} />
       <ChatBody messages={messages} />
       <ChatMessageEditor createNewMessage={createNewMessage} />
     </ChatContainer>

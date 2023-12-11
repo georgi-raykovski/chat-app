@@ -4,9 +4,10 @@ import { useUsername } from '../context';
 
 interface IChatHeaderProps {
   onLogOutClick: () => void;
+  switchTheme: () => void;
 }
 
-export const ChatHeader = ({ onLogOutClick }: IChatHeaderProps) => {
+export const ChatHeader = ({ onLogOutClick, switchTheme }: IChatHeaderProps) => {
   const { username } = useUsername();
 
   return (
@@ -14,7 +15,10 @@ export const ChatHeader = ({ onLogOutClick }: IChatHeaderProps) => {
       <h2>
         <Bold>YearsChat</Bold>,<FadedSpan> logged in as {username} </FadedSpan>
       </h2>
-      <Button onClick={onLogOutClick}>Log out</Button>
+      <div>
+        <Button onClick={switchTheme}>Switch Theme</Button>
+        <Button onClick={onLogOutClick}>Log out</Button>
+      </div>
     </StyledChatHeader>
   );
 };

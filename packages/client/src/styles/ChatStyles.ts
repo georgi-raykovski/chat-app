@@ -63,12 +63,9 @@ export const StyledChatBody = styled.div`
   height: 60%;
   overflow-y: scroll;
   margin-bottom: 30px;
+
   &::-webkit-scrollbar {
     width: 10px; /* Set the width of the scrollbar */
-  }
-
-  &::-webkit-scrollbar-track {
-    background-color: #f0f0f0;
   }
 
   &::-webkit-scrollbar-thumb {

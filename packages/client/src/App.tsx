@@ -1,6 +1,6 @@
 import React from 'react';
-import { LoginForm, Chat, MainContainer, UsernameProvider } from './components';
-import { Button, GlobalStyles } from './styles';
+import { LoginForm, Chat, MainContainer } from './components';
+import { GlobalStyles } from './styles';
 import { ThemeProvider } from 'styled-components';
 import { useTheme, useAuth } from './hooks';
 
@@ -12,16 +12,11 @@ const App = () => {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <UsernameProvider>
-        <MainContainer>
-          <GlobalStyles />
-          <Button className="toggle" onClick={onThemeSwitchHandler}>
-            Switch Theme
-          </Button>
-          {!isUserLoggedIn && <LoginForm loginClickHandler={login} />}
-          {isUserLoggedIn && <Chat logoutClickHandler={logout} />}
-        </MainContainer>
-      </UsernameProvider>
+      <MainContainer>
+        <GlobalStyles />
+        {!isUserLoggedIn && <LoginForm loginClickHandler={login} switchTheme={onThemeSwitchHandler} />}
+        {isUserLoggedIn && <Chat logoutClickHandler={logout} switchTheme={onThemeSwitchHandler} />}
+      </MainContainer>
     </ThemeProvider>
   );
 };

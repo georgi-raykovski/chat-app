@@ -3,9 +3,10 @@ import { LoginFormSection, LoginFormContainer, Input, Button, FlexContainer } fr
 
 interface ILoginFormProps {
   loginClickHandler: (value: string) => void;
+  switchTheme: () => void;
 }
 
-export const LoginForm = ({ loginClickHandler }: ILoginFormProps) => {
+export const LoginForm = ({ loginClickHandler, switchTheme }: ILoginFormProps) => {
   const [inputValue, setInputValue] = React.useState<string>('');
 
   const onChangeInputHandler = (value: string) => {
@@ -49,6 +50,9 @@ export const LoginForm = ({ loginClickHandler }: ILoginFormProps) => {
           </Button>
         </LoginFormContainer>
       </FlexContainer>
+      <Button className="toggle" onClick={switchTheme}>
+        Switch Theme
+      </Button>
     </LoginFormSection>
   );
 };

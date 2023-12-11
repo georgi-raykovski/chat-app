@@ -20,7 +20,6 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
-  font-size: 1rem;
   padding: 12px;
   background-color: #ffa511;
   border-radius: 8px;

@@ -8,7 +8,7 @@ interface IChatMessageEditorProps {
 }
 
 export const ChatMessageEditor = ({ createNewMessage }: IChatMessageEditorProps) => {
-  const [textareaValue, setTextareaValue] = React.useState<string | undefined>(undefined);
+  const [textareaValue, setTextareaValue] = React.useState<string>('');
   const { username } = useUsername();
 
   const onChangeHandler = (value: string) => {

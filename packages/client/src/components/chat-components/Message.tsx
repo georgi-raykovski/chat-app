@@ -3,19 +3,24 @@ import { IMessage } from './types';
 import { useUsername } from '../context';
 import { ActionButtons, Button, MessageBody, MessageHeader, StyledMessage } from '../../styles';
 
-interface IMessageProps extends IMessage {}
+interface IMessageProps extends IMessage {
+  omitHeader?: boolean;
+}
 
 const dataOptions: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
 
-export const Message = ({ content, datetime, username }: IMessageProps) => {
+export const Message = ({ content, datetime, username, omitHeader = false }: IMessageProps) => {
   const { username: currentUser } = useUsername();
   const isFromCurrentUser = currentUser === username;
+  const formattedDate = datetime.toLocaleTimeString(undefined, dataOptions);
 
   return (
-    <StyledMessage $isFromCurrentUser={isFromCurrentUser}>
-      <MessageHeader>
-        {username}, {datetime.toLocaleTimeString(undefined, dataOptions)}
-      </MessageHeader>
+    <StyledMessage $isFromCurrentUser={isFromCurrentUser} $omittedHeader={omitHeader}>
+      {!omitHeader && (
+        <MessageHeader>
+          {username}, {formattedDate}
+        </MessageHeader>
+      )}
       <MessageBody>
         {content}
         <ActionButtons className="action-buttons">

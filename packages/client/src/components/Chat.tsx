@@ -10,13 +10,12 @@ interface IChatProps {
 }
 
 // TODO Add backend user/messages logic
-
 export const Chat = ({ logoutClickHandler, switchTheme }: IChatProps) => {
   const [messages, setMessages] = React.useState<IMessage[]>([]);
 
-  const onLogOutClick = React.useCallback(() => {
+  const onLogOutClick = () => {
     logoutClickHandler();
-  }, [logoutClickHandler]);
+  };
 
   const createNewMessage = (message: IMessage) => {
     setMessages((prevValue) => [...prevValue, message]);

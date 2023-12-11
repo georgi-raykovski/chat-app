@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 interface StyledMessageProps {
   $isFromCurrentUser: boolean;
+  $omittedHeader: boolean;
 }
 
 export const ChatContainer = styled.section`
@@ -25,7 +26,7 @@ export const StyledChatHeader = styled.div`
 
 export const StyledMessage = styled.div<StyledMessageProps>`
   width: 80%;
-  padding: 16px 0;
+  padding-top: ${(props) =>  props.$omittedHeader ? '4px' : '8px'};
   align-self: ${(props) => (props.$isFromCurrentUser ? 'start' : 'end')};
   h3 {
     text-align: ${(props) => (props.$isFromCurrentUser ? 'left' : 'right')};
@@ -33,6 +34,10 @@ export const StyledMessage = styled.div<StyledMessageProps>`
 
   div {
     background-color: ${(props) => (props.$isFromCurrentUser ? '#1a82fd' : '#888888')};
+  }
+
+  @media (min-width: 400px) {
+    padding-top: ${(props) =>  props.$omittedHeader ? '8px' : '16px'};
   }
 `;
 

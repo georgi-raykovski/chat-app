@@ -68,7 +68,7 @@ export const FadedSpan = styled.span`
 export const TextBox = styled.div`
   border: 1px solid green;
   padding: 10px;
-  background-color: white;
+  background-color: ${({ theme }) => theme.input.bgColor};
   flex: 1;
   border-radius: 8px;
   box-sizing: border-box;
@@ -79,9 +79,11 @@ export const TextBox = styled.div`
 
   textarea {
     border: none;
+    outline: none;
     box-sizing: border-box;
     height: 100%;
     width: 100%;
     resize: none;
+    background-color: ${({ theme }) => theme.input.bgColor};
   }
 `;

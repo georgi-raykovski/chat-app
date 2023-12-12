@@ -15,23 +15,19 @@ export const useAuth = () => {
   const [isUserLoggedIn, setIsUserLoggedIn] = React.useState<boolean>(getInitialLoggedInState);
 
   const login = React.useCallback(
-    (value: string) => {
-      try {
-        setUsername(value);
-        setIsUserLoggedIn(true);
-        localStorage.setItem(USER_LOGGED_IN_KEY, 'true');
-        localStorage.setItem(USERNAME_KEY, value);
+    async (value: string) => {
+      setUsername(value);
+      setIsUserLoggedIn(true);
+      localStorage.setItem(USER_LOGGED_IN_KEY, 'true');
+      localStorage.setItem(USERNAME_KEY, value);
 
-        fetch(LOGIN_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ username: value }),
-        });
-      } catch (error) {
-        console.error('Error during signup:', error);
-      }
+      await fetch(LOGIN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: value }),
+      }).catch((e) => console.log('Error during signup: ', e));
     },
     [setUsername]
   );

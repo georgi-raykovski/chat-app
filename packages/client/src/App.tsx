@@ -4,6 +4,7 @@ import { GlobalStyles } from './styles';
 import { ThemeProvider } from 'styled-components';
 import { useTheme, useAuth } from './hooks';
 import { io } from 'socket.io-client';
+import { SocketProvider } from './components/context/SocketContext';
 
 const socket = io('http://localhost:3001');
 
@@ -17,13 +18,15 @@ const App = () => {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <MessagesProvider>
-        <MainContainer>
-          <GlobalStyles />
-          {!isUserLoggedIn && <LoginForm loginClickHandler={login} switchTheme={onThemeSwitchHandler} />}
-          {isUserLoggedIn && <Chat logoutClickHandler={logout} switchTheme={onThemeSwitchHandler} />}
-        </MainContainer>
-      </MessagesProvider>
+      <SocketProvider>
+        <MessagesProvider>
+          <MainContainer>
+            <GlobalStyles />
+            {!isUserLoggedIn && <LoginForm loginClickHandler={login} switchTheme={onThemeSwitchHandler} />}
+            {isUserLoggedIn && <Chat logoutClickHandler={logout} switchTheme={onThemeSwitchHandler} />}
+          </MainContainer>
+        </MessagesProvider>
+      </SocketProvider>
     </ThemeProvider>
   );
 };

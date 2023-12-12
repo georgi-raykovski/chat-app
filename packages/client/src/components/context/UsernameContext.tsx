@@ -1,5 +1,6 @@
 import React from 'react';
 import { USERNAME_KEY } from '../../hooks';
+import { IProviderProps } from './types';
 
 const getInitialUsername = (): string => {
   return localStorage.getItem(USERNAME_KEY) ?? '';
@@ -12,11 +13,7 @@ const defaultUsernameContextValue = {
 
 const UsernameContext = React.createContext(defaultUsernameContextValue);
 
-interface IUsernameProviderProps {
-  children: React.ReactNode;
-}
-
-export const UsernameProvider = ({ children }: IUsernameProviderProps) => {
+export const UsernameProvider = ({ children }: IProviderProps) => {
   const [username, setUsername] = React.useState<string>(getInitialUsername);
 
   return <UsernameContext.Provider value={{ username, setUsername }}>{children}</UsernameContext.Provider>;

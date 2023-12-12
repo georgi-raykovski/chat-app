@@ -3,6 +3,7 @@ import { IMessage } from './types';
 import { Button, ChatMessageEditorContainer, TextBox } from '../../styles';
 import { useUsername } from '../context';
 import { useEnterPress } from '../../hooks';
+import { useSocket } from '../context/SocketContext';
 
 interface IChatMessageEditorProps {
   createNewMessage: (message: IMessage) => void;
@@ -10,6 +11,7 @@ interface IChatMessageEditorProps {
 }
 
 export const ChatMessageEditor = ({ createNewMessage, messagesLength }: IChatMessageEditorProps) => {
+  const socket = useSocket();
   const [textareaValue, setTextareaValue] = React.useState<string>('');
   const { username } = useUsername();
 
@@ -17,10 +19,10 @@ export const ChatMessageEditor = ({ createNewMessage, messagesLength }: IChatMes
     setTextareaValue(value);
   }, []);
 
-  const onClickHandler = React.useCallback(() => {
+  const onClickHandler = React.useCallback(async () => {
     if (!textareaValue) return;
 
-    createNewMessage({
+    const newMessage = {
       id: messagesLength + 1,
       content: textareaValue,
       datetime: new Date(),
@@ -30,10 +32,13 @@ export const ChatMessageEditor = ({ createNewMessage, messagesLength }: IChatMes
         hasBeenEdited: false,
         isBeingEdited: false,
       },
-    });
+    };
+
+    createNewMessage(newMessage);
+    await socket?.emit('create_message', newMessage);
 
     setTextareaValue('');
-  }, [createNewMessage, messagesLength, textareaValue, username]);
+  }, [createNewMessage, messagesLength, socket, textareaValue, username]);
 
   const onEnter = useEnterPress(onClickHandler);
 

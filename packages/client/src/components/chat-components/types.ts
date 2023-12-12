@@ -2,6 +2,8 @@ export interface IMessage {
   username: string;
   datetime: Date;
   content: string;
+  isDeleted: boolean;
+  hasBeenEdited: boolean;
 }
 
 export type ChatBodyRefType = HTMLDivElement | null;

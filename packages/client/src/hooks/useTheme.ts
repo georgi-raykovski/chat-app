@@ -16,11 +16,11 @@ const getInitialLocalThemeKey = (): ThemeKey => {
 export const useTheme = () => {
   const [themeKey, setThemeKey] = React.useState<ThemeKey>(getInitialLocalThemeKey);
 
-  const onThemeSwitchHandler = () => {
+  const onThemeSwitchHandler = React.useCallback(() => {
     const nextThemeKey = themeKey === 'light' ? 'dark' : 'light';
     setThemeKey(nextThemeKey);
     localStorage.setItem(THEME_KEY, nextThemeKey);
-  };
+  }, [themeKey]);
 
   const currentTheme = Theme[themeKey];
 

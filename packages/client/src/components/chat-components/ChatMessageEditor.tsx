@@ -11,9 +11,9 @@ export const ChatMessageEditor = ({ createNewMessage }: IChatMessageEditorProps)
   const [textareaValue, setTextareaValue] = React.useState<string>('');
   const { username } = useUsername();
 
-  const onChangeHandler = (value: string) => {
+  const onChangeHandler = React.useCallback((value: string) => {
     setTextareaValue(value);
-  };
+  }, []);
 
   const onClickHandler = React.useCallback(() => {
     if (!textareaValue) return;
@@ -22,6 +22,8 @@ export const ChatMessageEditor = ({ createNewMessage }: IChatMessageEditorProps)
       content: textareaValue,
       datetime: new Date(),
       username,
+      isDeleted: false,
+      hasBeenEdited: false,
     });
 
     setTextareaValue('');

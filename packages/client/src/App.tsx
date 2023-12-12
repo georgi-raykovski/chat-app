@@ -1,5 +1,5 @@
 import React from 'react';
-import { LoginForm, Chat, MainContainer } from './components';
+import { LoginForm, Chat, MainContainer, MessagesProvider } from './components';
 import { GlobalStyles } from './styles';
 import { ThemeProvider } from 'styled-components';
 import { useTheme, useAuth } from './hooks';
@@ -10,11 +10,13 @@ const App = () => {
 
   return (
     <ThemeProvider theme={currentTheme}>
-      <MainContainer>
-        <GlobalStyles />
-        {!isUserLoggedIn && <LoginForm loginClickHandler={login} switchTheme={onThemeSwitchHandler} />}
-        {isUserLoggedIn && <Chat logoutClickHandler={logout} switchTheme={onThemeSwitchHandler} />}
-      </MainContainer>
+      <MessagesProvider>
+        <MainContainer>
+          <GlobalStyles />
+          {!isUserLoggedIn && <LoginForm loginClickHandler={login} switchTheme={onThemeSwitchHandler} />}
+          {isUserLoggedIn && <Chat logoutClickHandler={logout} switchTheme={onThemeSwitchHandler} />}
+        </MainContainer>
+      </MessagesProvider>
     </ThemeProvider>
   );
 };

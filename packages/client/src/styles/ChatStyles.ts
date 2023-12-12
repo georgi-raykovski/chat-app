@@ -64,6 +64,10 @@ export const MessageBody = styled.div`
       pointer-events: all;
     }
   }
+
+  i { 
+    font-style: italic;
+  }
 `;
 
 export const MessageHeader = styled.h3`

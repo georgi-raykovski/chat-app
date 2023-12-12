@@ -1,5 +1,4 @@
-import { Request } from "express";
-
+import { Request } from 'express';
 export interface QueryPayload {
   foo: string;
 }

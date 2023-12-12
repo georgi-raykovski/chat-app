@@ -2,15 +2,18 @@ import React from 'react';
 import { IMessage } from '../chat-components';
 import { IProviderProps } from './types';
 import { useSocket } from './SocketContext';
+import { ClientToServerEventsEnum, ServerToClientEventsEnum } from '../../utils';
 
 interface IMessagesContext {
   messages: IMessage[];
-  sendEditMessageSignal: (messageId: number, newContent: string) => void;
-  sendDeleteMessageSignal: (messageId: number) => void;
+  sendCreateMessageSignal: (newMessage: IMessage) => void;
+  sendEditMessageSignal: (messageId: string, newContent: string) => void;
+  sendDeleteMessageSignal: (messageId: string) => void;
 }
 
 const defaultMessagesContextValue: IMessagesContext = {
   messages: [],
+  sendCreateMessageSignal(newMessage) {},
   sendEditMessageSignal: (messageId) => {},
   sendDeleteMessageSignal: (messageId) => {},
 };
@@ -22,15 +25,34 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
   const socket = useSocket();
 
   const sendEditMessageSignal = React.useCallback(
-    async (messageId: number, newContent: string) => {
-      await socket?.emit('edit_message', messageId, newContent);
+    async (messageId: string, newContent: string) => {
+      try {
+        await socket?.emit(ClientToServerEventsEnum.EDIT_MESSAGE_EVENT, messageId, newContent);
+      } catch (e) {
+        console.error(`Error sending ${ClientToServerEventsEnum.EDIT_MESSAGE_EVENT} signal:`, e);
+      }
     },
     [socket]
   );
 
   const sendDeleteMessageSignal = React.useCallback(
-    async (messageId: number) => {
-      await socket?.emit('delete_message', messageId);
+    async (messageId: string) => {
+      try {
+        await socket?.emit(ClientToServerEventsEnum.DELETE_MESSAGE_EVENT, messageId);
+      } catch (e) {
+        console.error(`Error sending ${ClientToServerEventsEnum.DELETE_MESSAGE_EVENT} signal:`, e);
+      }
+    },
+    [socket]
+  );
+
+  const sendCreateMessageSignal = React.useCallback(
+    async (newMessage: IMessage) => {
+      try {
+        await socket?.emit(ClientToServerEventsEnum.CREATE_MESSAGE_EVENT, newMessage);
+      } catch (e) {
+        console.error(`Error sending ${ClientToServerEventsEnum.CREATE_MESSAGE_EVENT} signal:`, e);
+      }
     },
     [socket]
   );
@@ -61,10 +83,10 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
   }, []);
 
   React.useEffect(() => {
-    socket?.on('message_edited', editMessage);
+    socket?.on(ServerToClientEventsEnum.MESSAGE_EDITED_EVENT, editMessage);
 
     return () => {
-      socket?.off('message_edited', editMessage);
+      socket?.off(ServerToClientEventsEnum.MESSAGE_EDITED_EVENT, editMessage);
     };
   }, [editMessage, socket]);
 
@@ -73,10 +95,10 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
   }, []);
 
   React.useEffect(() => {
-    socket?.on('receive_message', handleNewMessage);
+    socket?.on(ServerToClientEventsEnum.RECEIVE_MESSAGE_EVENT, handleNewMessage);
 
     return () => {
-      socket?.off('receive_message', handleNewMessage);
+      socket?.off(ServerToClientEventsEnum.RECEIVE_MESSAGE_EVENT, handleNewMessage);
     };
   }, [handleNewMessage, socket]);
 
@@ -95,15 +117,16 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
   }, []);
 
   React.useEffect(() => {
-    socket?.on('message_deleted', deleteMessage);
+    socket?.on(ServerToClientEventsEnum.MESSAGE_DELETED_EVENT, deleteMessage);
 
     return () => {
-      socket?.off('message_deleted', deleteMessage);
+      socket?.off(ServerToClientEventsEnum.MESSAGE_DELETED_EVENT, deleteMessage);
     };
-  });
+  }, [deleteMessage, socket]);
 
   return (
-    <MessagesContext.Provider value={{ messages, sendEditMessageSignal, sendDeleteMessageSignal }}>
+    <MessagesContext.Provider
+      value={{ messages, sendCreateMessageSignal, sendEditMessageSignal, sendDeleteMessageSignal }}>
       {children}
     </MessagesContext.Provider>
   );

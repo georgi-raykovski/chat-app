@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { usersData } from '../routes/users';
+import { RequestBody } from '../types';
 
 interface SignupRequestBody {
   username: string;
@@ -9,7 +10,6 @@ interface GetUserByIdRequestParams {
   id: string;
 }
 
-type RequestBody<T extends Record<any, any>> = Request<{}, {}, T>;
 type SignupRequest = RequestBody<SignupRequestBody>;
 
 const login = (req: SignupRequest, res: Response) => {

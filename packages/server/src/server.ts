@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import { Server } from 'socket.io';
 import http from 'http';
-import { QueryPayload } from './types';
-import { userRouter } from './routes';
+import { messagesRouter, userRouter } from './routes';
+import { IMessage } from '../../client';
 
 const app = express();
 const server = http.createServer(app);
@@ -18,11 +18,27 @@ const io = new Server(server, {
 app.use(cors());
 app.use(express.json());
 app.use('/users', userRouter);
+app.use('/messages', messagesRouter);
+
+export const messages: IMessage[] = [];
 
 io.on('connection', (socket) => {
-  socket.on('message', (message) => {
-    console.log(message);
-    io.emit('message', `${socket.id} said ${message}`);
+  socket.on('create_message', (message: IMessage) => {
+    messages.push(message);
+    socket.broadcast.emit('receive_message', message);
+  });
+
+  socket.on('edit_message', (messageId: string, newContent) => {
+    const editedMessageIndex = messages.findIndex((message) => message.id === parseInt(messageId));
+    const editedMessage = messages[editedMessageIndex];
+
+    editedMessage.content = newContent;
+    editedMessage.state.hasBeenEdited = true;
+    editedMessage.datetime = new Date();
+
+    console.log(messages[editedMessageIndex]);
+
+    socket.broadcast.emit('message_has_been_edited', { ...editedMessage });
   });
 });
 

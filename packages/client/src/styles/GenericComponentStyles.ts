@@ -27,6 +27,7 @@ export const Button = styled.button`
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 0.9rem;
 
   &:hover {
     background-color: #e59400;
@@ -90,6 +91,7 @@ export const TextBox = styled.div`
     resize: none;
     background-color: transparent;
     color: ${({ theme }) => theme.textColor};
+    font-size: 0.9rem;
 
     &::placeholder {
       color: ${({ theme }) => theme.textColor};

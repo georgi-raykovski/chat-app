@@ -2,7 +2,8 @@ import React from 'react';
 import { IMessage } from '../chat-components';
 import { IProviderProps } from './types';
 import { useSocket } from './SocketContext';
-import { ClientToServerEventsEnum, ServerToClientEventsEnum } from '../../utils';
+import { ServerToClientEventsEnum } from '../../utils';
+import { useSendEventSignals } from '../../hooks';
 
 interface IMessagesContext {
   messages: IMessage[];
@@ -24,38 +25,7 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const socket = useSocket();
 
-  const sendEditMessageSignal = React.useCallback(
-    async (messageId: string, newContent: string) => {
-      try {
-        await socket?.emit(ClientToServerEventsEnum.EDIT_MESSAGE_EVENT, messageId, newContent);
-      } catch (e) {
-        console.error(`Error sending ${ClientToServerEventsEnum.EDIT_MESSAGE_EVENT} signal:`, e);
-      }
-    },
-    [socket]
-  );
-
-  const sendDeleteMessageSignal = React.useCallback(
-    async (messageId: string) => {
-      try {
-        await socket?.emit(ClientToServerEventsEnum.DELETE_MESSAGE_EVENT, messageId);
-      } catch (e) {
-        console.error(`Error sending ${ClientToServerEventsEnum.DELETE_MESSAGE_EVENT} signal:`, e);
-      }
-    },
-    [socket]
-  );
-
-  const sendCreateMessageSignal = React.useCallback(
-    async (newMessage: IMessage) => {
-      try {
-        await socket?.emit(ClientToServerEventsEnum.CREATE_MESSAGE_EVENT, newMessage);
-      } catch (e) {
-        console.error(`Error sending ${ClientToServerEventsEnum.CREATE_MESSAGE_EVENT} signal:`, e);
-      }
-    },
-    [socket]
-  );
+  const { sendCreateMessageSignal, sendDeleteMessageSignal, sendEditMessageSignal } = useSendEventSignals(socket);
 
   React.useEffect(() => {
     fetch('http://localhost:3001/messages')

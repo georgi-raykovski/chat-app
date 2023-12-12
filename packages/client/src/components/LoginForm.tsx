@@ -1,5 +1,6 @@
 import React from 'react';
 import { LoginFormSection, LoginFormContainer, Input, Button, FlexContainer } from '../styles';
+import { useEnterPress } from '../hooks';
 
 interface ILoginFormProps {
   loginClickHandler: (value: string) => void;
@@ -19,19 +20,11 @@ export const LoginForm = ({ loginClickHandler, switchTheme }: ILoginFormProps) =
     }
   }, [inputValue, loginClickHandler]);
 
-  const onEnter = React.useCallback(
-    (e: React.KeyboardEvent<HTMLInputElement>) => {
-      if (e.key === 'Enter' && e.shiftKey === false) {
-        e.preventDefault();
-        onClickHandler();
-      }
-    },
-    [onClickHandler]
-  );
+  const onEnter = useEnterPress(onClickHandler);
 
   return (
     <LoginFormSection>
-      <FlexContainer className='login-form'>
+      <FlexContainer className="login-form">
         <LoginFormContainer>
           <h1 className="login-form__header">Welcome to YearsChat!</h1>
           <p>Please enter your name below and click "Log in"</p>

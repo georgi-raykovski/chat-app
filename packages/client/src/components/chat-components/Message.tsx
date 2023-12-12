@@ -1,7 +1,8 @@
 import React from 'react';
 import { IMessage } from './types';
 import { useMessages, useUsername } from '../context';
-import { ActionButtons, Button, MessageBody, MessageHeader, StyledMessage } from '../../styles';
+import { ActionButtons, Button, EditMessageInput, MessageBody, MessageHeader, StyledMessage } from '../../styles';
+import { useEnterPress } from '../../hooks';
 
 interface IMessageProps extends IMessage {
   shouldOmitHeader: boolean;
@@ -14,6 +15,7 @@ const dataOptions: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'nume
 export const Message = (props: IMessageProps) => {
   const { content, datetime, idx, state, shouldOmitHeader, username, zIdx = 0 } = props;
   const { hasBeenDeleted, hasBeenEdited, isBeingEdited } = state;
+  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const { username: currentUser } = useUsername();
   const { editMessage, startEditingMessage, stopEditingMessage, deleteMessage } = useMessages();
@@ -29,14 +31,20 @@ export const Message = (props: IMessageProps) => {
 
   const onDiscardEditHandler = React.useCallback(() => {
     stopEditingMessage(idx);
-    setMessageContent(content)
+    setMessageContent(content);
   }, [content, idx, stopEditingMessage]);
 
   const onFinishEditHandler = React.useCallback(() => {
-    if(!messageContent) return;
+    if (!messageContent) return;
+    if (messageContent === content) {
+      stopEditingMessage(idx);
+      return;
+    }
 
     editMessage(idx, messageContent);
-  }, [editMessage, idx, messageContent]);
+  }, [content, editMessage, idx, messageContent, stopEditingMessage]);
+
+  const onEnter = useEnterPress(onFinishEditHandler);
 
   const onDeleteClickHandler = React.useCallback(() => {
     deleteMessage(idx);
@@ -46,10 +54,20 @@ export const Message = (props: IMessageProps) => {
     setMessageContent(value);
   }, []);
 
+  React.useEffect(() => {
+    if (isBeingEdited && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isBeingEdited]);
+
   const shouldShowHeader = !shouldOmitHeader || hasBeenEdited;
 
   return (
-    <StyledMessage $isFromCurrentUser={isFromCurrentUser} $shouldOmitHeader={shouldOmitHeader} $zIndex={zIdx}>
+    <StyledMessage
+      $isFromCurrentUser={isFromCurrentUser}
+      $shouldOmitHeader={shouldOmitHeader}
+      $zIndex={zIdx}
+      $isBeingEdited={isBeingEdited}>
       {shouldShowHeader && (
         <MessageHeader>
           {username},{hasBeenEdited && !hasBeenDeleted && 'Edited at '}
@@ -60,7 +78,13 @@ export const Message = (props: IMessageProps) => {
         {hasBeenDeleted && <i>{content}</i>}
         {!hasBeenDeleted && !isBeingEdited && content}
         {isBeingEdited && !hasBeenDeleted && (
-          <input type="text" value={messageContent} onChange={(e) => onChangeInputHandler(e.target.value)} />
+          <EditMessageInput
+            ref={inputRef}
+            type="text"
+            value={messageContent}
+            onKeyDown={onEnter}
+            onChange={(e) => onChangeInputHandler(e.target.value)}
+          />
         )}
         {!hasBeenDeleted && !isBeingEdited && (
           <ActionButtons className="action-buttons">

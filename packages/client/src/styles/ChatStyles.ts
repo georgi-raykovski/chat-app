@@ -4,6 +4,7 @@ interface StyledMessageProps {
   $isFromCurrentUser: boolean;
   $shouldOmitHeader: boolean;
   $zIndex: number;
+  $isBeingEdited: boolean;
 }
 
 export const ChatContainer = styled.section`
@@ -42,7 +43,10 @@ export const StyledMessage = styled.div<StyledMessageProps>`
   }
 
   div {
-    background-color: ${(props) => (props.$isFromCurrentUser ? '#1a82fd' : '#888888')};
+    background-color: ${({ $isBeingEdited, $isFromCurrentUser }) => {
+      if ($isBeingEdited) return '#1a8ec1';
+      return $isFromCurrentUser ? '#1a82fd' : '#888888';
+    }};
   }
 
   @media (min-width: 400px) {
@@ -56,7 +60,6 @@ export const MessageBody = styled.div`
   border-radius: 8px;
   position: relative;
   z-index: 0;
-
   &:hover {
     .action-buttons {
       opacity: 1;
@@ -65,11 +68,11 @@ export const MessageBody = styled.div`
     }
   }
 
-  i { 
+  i {
     font-style: italic;
   }
 `;
-
+//
 export const MessageHeader = styled.h3`
   padding: 6px 0;
 `;
@@ -129,4 +132,13 @@ export const ChatMessageEditorContainer = styled.div`
   @media (min-width: 400px) {
     padding: 20px 40px;
   }
+`;
+
+export const EditMessageInput = styled.input`
+  background-color: transparent;
+  color: white;
+  border: none;
+  outline: none;
+  width: 100%;
+  font-size: 1rem;
 `;

@@ -2,6 +2,7 @@ import React from 'react';
 import { IMessage } from './types';
 import { Button, ChatMessageEditorContainer, TextBox } from '../../styles';
 import { useUsername } from '../context';
+import { useEnterPress } from '../../hooks';
 
 interface IChatMessageEditorProps {
   createNewMessage: (message: IMessage) => void;
@@ -32,15 +33,7 @@ export const ChatMessageEditor = ({ createNewMessage }: IChatMessageEditorProps)
     setTextareaValue('');
   }, [createNewMessage, textareaValue, username]);
 
-  const onEnter = React.useCallback(
-    (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (e.key === 'Enter' && e.shiftKey === false) {
-        e.preventDefault();
-        onClickHandler();
-      }
-    },
-    [onClickHandler]
-  );
+  const onEnter = useEnterPress(onClickHandler);
 
   return (
     <ChatMessageEditorContainer>

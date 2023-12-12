@@ -9,105 +9,57 @@ interface IMessageProps extends IMessage {
   zIdx?: number;
 }
 
-interface IEditState {
-  isBeingEdited: boolean;
-  hasBeenEdited: boolean;
-}
-
 const dataOptions: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'numeric', hour12: true };
 
 export const Message = (props: IMessageProps) => {
-  const {
-    content,
-    datetime,
-    hasBeenEdited,
-    idx,
-    isDeleted: hasBeenDeleted,
-    shouldOmitHeader,
-    username,
-    zIdx = 0,
-  } = props;
+  const { content, datetime, idx, state, shouldOmitHeader, username, zIdx = 0 } = props;
+  const { hasBeenDeleted, hasBeenEdited, isBeingEdited } = state;
 
   const { username: currentUser } = useUsername();
-  const { editMessage, deleteMessage } = useMessages();
+  const { editMessage, startEditingMessage, stopEditingMessage, deleteMessage } = useMessages();
 
-  const [isDeleted, setIsDeleted] = React.useState<boolean>(hasBeenDeleted);
-
-  const initialEditState = React.useMemo(
-    () => ({
-      hasBeenEdited,
-      isBeingEdited: false,
-    }),
-    [hasBeenEdited]
-  );
-
-  const [editState, setEditState] = React.useState<IEditState>(initialEditState);
-  const [messageContent, setMessageContent] = React.useState<string>(content);
+  const [messageContent, setMessageContent] = React.useState(content);
 
   const isFromCurrentUser = currentUser === username;
   const formattedDate = datetime.toLocaleTimeString(undefined, dataOptions);
 
   const onEditClickHandler = React.useCallback(() => {
-    setEditState({
-      hasBeenEdited: false,
-      isBeingEdited: true,
-    });
-  }, []);
+    startEditingMessage(idx);
+  }, [idx, startEditingMessage]);
+
+  const onDiscardEditHandler = React.useCallback(() => {
+    stopEditingMessage(idx);
+  }, [idx, stopEditingMessage]);
+
+  const onFinishEditHandler = React.useCallback(() => {
+    editMessage(idx, messageContent);
+  }, [editMessage, idx, messageContent]);
 
   const onDeleteClickHandler = React.useCallback(() => {
     deleteMessage(idx);
-    setIsDeleted(true);
   }, [deleteMessage, idx]);
 
   const onChangeInputHandler = React.useCallback((value: string) => {
     setMessageContent(value);
   }, []);
 
-  const onDiscardEditHandler = React.useCallback(() => {
-    setMessageContent(content);
-    setEditState(initialEditState);
-  }, [content, initialEditState]);
-
-  const onFinishEditHandler = React.useCallback(() => {
-    editMessage(idx, messageContent);
-    setEditState({
-      hasBeenEdited: true,
-      isBeingEdited: false,
-    });
-  }, [editMessage, idx, messageContent]);
-
-  const shouldShowHeader = !shouldOmitHeader || editState.hasBeenEdited;
-
-  React.useEffect(() => {
-    setMessageContent(content);
-  }, [content]);
-
-  React.useEffect(() => {
-    setIsDeleted(hasBeenDeleted);
-  }, [hasBeenDeleted]);
-
-  React.useEffect(() => {
-    setEditState({
-      isBeingEdited: false,
-      hasBeenEdited,
-    });
-  }, [hasBeenEdited]);
+  const shouldShowHeader = !shouldOmitHeader || hasBeenEdited;
 
   return (
     <StyledMessage $isFromCurrentUser={isFromCurrentUser} $shouldOmitHeader={shouldOmitHeader} $zIndex={zIdx}>
       {shouldShowHeader && (
         <MessageHeader>
-          {username},{editState.hasBeenEdited && 'Edited at '}
+          {username},{hasBeenEdited && !hasBeenDeleted && 'Edited at '}
           {formattedDate}
         </MessageHeader>
       )}
       <MessageBody>
-        {isDeleted && <i>{messageContent}</i>}
-        {!isDeleted && !editState.isBeingEdited && messageContent}
-        {editState.isBeingEdited && !isDeleted && (
+        {hasBeenDeleted && <i>{content}</i>}
+        {!hasBeenDeleted && !isBeingEdited && content}
+        {isBeingEdited && !hasBeenDeleted && (
           <input type="text" value={messageContent} onChange={(e) => onChangeInputHandler(e.target.value)} />
         )}
-        {!isDeleted && !editState.isBeingEdited && (
+        {!hasBeenDeleted && !isBeingEdited && (
           <ActionButtons className="action-buttons">
             <Button type="button" onClick={onEditClickHandler}>
               Edit
@@ -117,7 +69,7 @@ export const Message = (props: IMessageProps) => {
             </Button>
           </ActionButtons>
         )}
-        {editState.isBeingEdited && (
+        {state.isBeingEdited && (
           <ActionButtons className="action-buttons">
             <Button type="button" onClick={onFinishEditHandler}>
               ✔︎

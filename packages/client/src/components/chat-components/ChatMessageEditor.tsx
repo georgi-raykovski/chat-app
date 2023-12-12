@@ -22,8 +22,11 @@ export const ChatMessageEditor = ({ createNewMessage }: IChatMessageEditorProps)
       content: textareaValue,
       datetime: new Date(),
       username,
-      isDeleted: false,
-      hasBeenEdited: false,
+      state: {
+        hasBeenDeleted: false,
+        hasBeenEdited: false,
+        isBeingEdited: false,
+      },
     });
 
     setTextareaValue('');

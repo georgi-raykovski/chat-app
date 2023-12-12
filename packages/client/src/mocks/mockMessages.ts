@@ -1,6 +1,6 @@
 import { IMessage } from '../components/chat-components';
 
-export const mockMessages: IMessage[] = [
+export const mockMessages = [
   {
     username: 'Georgi',
     datetime: new Date(),

@@ -1,8 +1,9 @@
 import React from 'react';
-import { IMessage } from './types';
-import { useMessages, useUsername } from '../context';
-import { ActionButtons, Button, EditMessageInput, MessageBody, MessageHeader, StyledMessage } from '../../styles';
-import { useEnterPress } from '../../hooks';
+import { IMessage } from '../types';
+import { useMessages, useUsername } from '../../context';
+import { MessageBody, MessageHeader, StyledMessage } from './MessageStyles';
+import { useEnterPress } from '../../../hooks';
+import { MessageContent, ActionButtons } from '..';
 
 interface IMessageProps extends IMessage {
   shouldOmitHeader: boolean;
@@ -76,37 +77,24 @@ export const Message = (props: IMessageProps) => {
         </MessageHeader>
       )}
       <MessageBody>
-        {hasBeenDeleted && <i>{content}</i>}
-        {!hasBeenDeleted && !isBeingEdited && content}
-        {isBeingEdited && !hasBeenDeleted && (
-          <EditMessageInput
-            ref={inputRef}
-            type="text"
-            value={messageContent}
-            onKeyDown={onEnter}
-            onChange={(e) => onChangeInputHandler(e.target.value)}
-          />
-        )}
-        {!hasBeenDeleted && !isBeingEdited && isFromCurrentUser && (
-          <ActionButtons className="action-buttons">
-            <Button type="button" onClick={onEditClickHandler}>
-              Edit
-            </Button>
-            <Button type="button" onClick={onDeleteClickHandler}>
-              Delete
-            </Button>
-          </ActionButtons>
-        )}
-        {isBeingEdited && (
-          <ActionButtons className="action-buttons">
-            <Button type="button" onClick={onFinishEditHandler}>
-              ✔︎
-            </Button>
-            <Button type="button" onClick={onDiscardEditHandler}>
-              ✕
-            </Button>
-          </ActionButtons>
-        )}
+        <MessageContent
+          controlledContent={messageContent}
+          hasBeenDeleted={hasBeenDeleted}
+          initialContent={content}
+          inputRef={inputRef}
+          isBeingEdited={isBeingEdited}
+          onChangeInputHandler={onChangeInputHandler}
+          onEnter={onEnter}
+        />
+        <ActionButtons
+          hasBeenDeleted={hasBeenDeleted}
+          isBeingEdited={isBeingEdited}
+          isFromCurrentUser={isFromCurrentUser}
+          onDeleteClickHandler={onDeleteClickHandler}
+          onDiscardEditHandler={onDiscardEditHandler}
+          onEditClickHandler={onEditClickHandler}
+          onFinishEditHandler={onFinishEditHandler}
+        />
       </MessageBody>
     </StyledMessage>
   );

@@ -1,6 +1,7 @@
 import React from 'react';
-import { FadedSpan, Bold, StyledChatHeader, Button, FlexContainer } from '../../styles';
-import { useUsername } from '../context';
+import { FadedSpan, Bold, Button, FlexContainer } from '../../../styles';
+import { useUsername } from '../../context';
+import { StyledChatHeader } from './ChatHeaderStyles';
 
 interface IChatHeaderProps {
   onLogOutClick: () => void;

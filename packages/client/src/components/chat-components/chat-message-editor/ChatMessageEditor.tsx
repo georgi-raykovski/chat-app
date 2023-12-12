@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, ChatMessageEditorContainer, TextBox } from '../../styles';
-import { useMessages, useUsername } from '../context';
-import { useEnterPress } from '../../hooks';
+import { Button, TextBox } from '../../../styles';
+import { useMessages, useUsername } from '../../context';
+import { useEnterPress } from '../../../hooks';
+import { ChatMessageEditorContainer } from './ChatMessageEditorStyles';
 
 interface IChatMessageEditorProps {
   messagesLength: number;

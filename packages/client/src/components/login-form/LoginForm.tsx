@@ -1,6 +1,7 @@
 import React from 'react';
-import { LoginFormSection, LoginFormContainer, Input, Button, FlexContainer } from '../styles';
-import { useEnterPress } from '../hooks';
+import { Input, Button, FlexContainer } from '../../styles';
+import { useEnterPress } from '../../hooks';
+import { LoginFormContainer, LoginFormSection } from './LoginFormStyles';
 
 interface ILoginFormProps {
   loginClickHandler: (value: string) => void;

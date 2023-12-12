@@ -1,8 +1,8 @@
 import React from 'react';
-import { ChatContainer } from '../styles';
-import { ChatBody, ChatBodyRefType, ChatHeader, ChatMessageEditor } from './chat-components';
-import { scrollToBottom } from '../utils';
-import { useMessages } from './context';
+import { ChatContainer } from './ChatStyles';
+import { ChatBody, ChatBodyRefType, ChatHeader, ChatMessageEditor } from '..';
+import { scrollToBottom } from '../../../utils';
+import { useMessages } from '../../context';
 
 interface IChatProps {
   logoutClickHandler: () => void;
@@ -20,8 +20,6 @@ export const Chat = ({ logoutClickHandler, switchTheme }: IChatProps) => {
   React.useEffect(() => {
     scrollToBottom(chatBodyRef);
   }, [messages]);
-
-
 
   return (
     <ChatContainer>

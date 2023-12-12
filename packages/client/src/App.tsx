@@ -1,10 +1,9 @@
 import React from 'react';
-import { LoginForm, Chat, MainContainer, MessagesProvider } from './components';
+import { LoginForm, Chat, MainContainer, MessagesProvider, SocketProvider } from './components';
 import { GlobalStyles } from './styles';
 import { ThemeProvider } from 'styled-components';
 import { useTheme, useAuth } from './hooks';
 import { io } from 'socket.io-client';
-import { SocketProvider } from './components/context/SocketContext';
 
 const socket = io('http://localhost:3001');
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Message } from './Message';
-import { ChatBodyRefType, GetMessagePropReqsParams, GetMessagePropReqsReturnType, IMessage } from './types';
-import { StyledChatBody } from '../../styles';
-import { areDatesOneMinuteApart } from '../../utils';
+import { Message } from '..';
+import { ChatBodyRefType, GetMessagePropReqsParams, GetMessagePropReqsReturnType, IMessage } from '../types';
+import { areDatesOneMinuteApart } from '../../../utils';
+import { StyledChatBody } from './ChatBodyStyles';
 
 interface IChatBodyProps {
   messages: IMessage[];

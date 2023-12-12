@@ -30,7 +30,6 @@ export const ChatMessageEditor = ({ createNewMessage, messagesLength }: IChatMes
       state: {
         hasBeenDeleted: false,
         hasBeenEdited: false,
-        isBeingEdited: false,
       },
     };
 

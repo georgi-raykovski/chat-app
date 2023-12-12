@@ -25,10 +25,10 @@ export const messages: IMessage[] = [];
 io.on('connection', (socket) => {
   socket.on('create_message', (message: IMessage) => {
     messages.push(message);
-    socket.broadcast.emit('receive_message', message);
+    io.emit('receive_message', message);
   });
 
-  socket.on('edit_message', (messageId: string, newContent) => {
+  socket.on('edit_message', (messageId: string, newContent: string) => {
     const editedMessageIndex = messages.findIndex((message) => message.id === parseInt(messageId));
     const editedMessage = messages[editedMessageIndex];
 
@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
     editedMessage.state.hasBeenEdited = true;
     editedMessage.datetime = new Date();
 
-    socket.broadcast.emit('message_has_been_edited', { ...editedMessage });
+    io.emit('message_has_been_edited', { ...editedMessage });
   });
 });
 

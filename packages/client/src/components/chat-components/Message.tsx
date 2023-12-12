@@ -13,35 +13,37 @@ const dataOptions: Intl.DateTimeFormatOptions = { hour: 'numeric', minute: 'nume
 
 export const Message = (props: IMessageProps) => {
   const { id, content, datetime, state, shouldOmitHeader, username, zIdx = 0 } = props;
-  const { hasBeenDeleted, hasBeenEdited, isBeingEdited } = state;
+  const { hasBeenDeleted, hasBeenEdited } = state;
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const { username: currentUser } = useUsername();
-  const { editMessage, startEditingMessage, stopEditingMessage, deleteMessage } = useMessages();
+  const { sendEditMessageSignal, deleteMessage } = useMessages();
 
   const [messageContent, setMessageContent] = React.useState(content);
+  const [isBeingEdited, setIsBeingEdited] = React.useState(false);
 
   const isFromCurrentUser = currentUser === username;
   const formattedDate = datetime.toLocaleTimeString(undefined, dataOptions);
 
   const onEditClickHandler = React.useCallback(() => {
-    startEditingMessage(id);
-  }, [id, startEditingMessage]);
+    setIsBeingEdited(true);
+  }, []);
 
   const onDiscardEditHandler = React.useCallback(() => {
-    stopEditingMessage(id);
+    setIsBeingEdited(false);
     setMessageContent(content);
-  }, [content, id, stopEditingMessage]);
+  }, [content]);
 
   const onFinishEditHandler = React.useCallback(() => {
     if (!messageContent) return;
     if (messageContent === content) {
-      stopEditingMessage(id);
+      setIsBeingEdited(false);
       return;
     }
 
-    editMessage(id, messageContent);
-  }, [content, editMessage, id, messageContent, stopEditingMessage]);
+    sendEditMessageSignal(id, messageContent);
+    setIsBeingEdited(false);
+  }, [content, sendEditMessageSignal, id, messageContent]);
 
   const onEnter = useEnterPress(onFinishEditHandler);
 
@@ -55,7 +57,7 @@ export const Message = (props: IMessageProps) => {
 
   React.useEffect(() => {
     if (isBeingEdited && inputRef.current) {
-      inputRef.current.focus();      
+      inputRef.current.focus();
     }
   }, [isBeingEdited]);
 
@@ -95,7 +97,7 @@ export const Message = (props: IMessageProps) => {
             </Button>
           </ActionButtons>
         )}
-        {state.isBeingEdited && (
+        {isBeingEdited && (
           <ActionButtons className="action-buttons">
             <Button type="button" onClick={onFinishEditHandler}>
               ✔︎

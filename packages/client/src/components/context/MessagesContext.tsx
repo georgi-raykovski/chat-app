@@ -6,18 +6,14 @@ import { useSocket } from './SocketContext';
 interface IMessagesContext {
   messages: IMessage[];
   createNewMessage: (newMessage: IMessage) => void;
-  editMessage: (messageId: number, newContent: string) => void;
-  startEditingMessage: (messageId: number) => void;
-  stopEditingMessage: (messageId: number) => void;
+  sendEditMessageSignal: (messageId: number, newContent: string) => void;
   deleteMessage: (messageId: number) => void;
 }
 
 const defaultMessagesContextValue: IMessagesContext = {
   messages: [],
   createNewMessage: (newMessage) => {},
-  editMessage: (messageId) => {},
-  startEditingMessage: (messageId) => {},
-  stopEditingMessage: (messageId) => {},
+  sendEditMessageSignal: (messageId) => {},
   deleteMessage: (messageId) => {},
 };
 
@@ -31,62 +27,11 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
     setMessages((prevValue) => [...prevValue, message]);
   }, []);
 
-  const editMessage = React.useCallback(
+  const sendEditMessageSignal = React.useCallback(
     async (messageId: number, newContent: string) => {
       await socket?.emit('edit_message', messageId, newContent);
-
-      setMessages((prevMessages: IMessage[]) => {
-        const updatedMessages = prevMessages.map((message) =>
-          message.id === messageId
-            ? {
-                ...message,
-                datetime: new Date(),
-                content: newContent,
-                state: {
-                  ...message.state,
-                  hasBeenEdited: true,
-                  isBeingEdited: false,
-                },
-              }
-            : message
-        );
-
-        return updatedMessages;
-      });
     },
     [socket]
-  );
-
-  const setEditingStateOfMessage = React.useCallback((messageId: number, state: boolean) => {
-    setMessages((prevMessages: IMessage[]) => {
-      const updatedMessages = prevMessages.map((message) =>
-        message.id === messageId
-          ? {
-              ...message,
-              state: {
-                ...message.state,
-                isBeingEdited: state,
-              },
-            }
-          : message
-      );
-
-      return updatedMessages;
-    });
-  }, []);
-
-  const startEditingMessage = React.useCallback(
-    (messageId: number) => {
-      setEditingStateOfMessage(messageId, true);
-    },
-    [setEditingStateOfMessage]
-  );
-
-  const stopEditingMessage = React.useCallback(
-    (messageId: number) => {
-      setEditingStateOfMessage(messageId, false);
-    },
-    [setEditingStateOfMessage]
   );
 
   const deleteMessage = React.useCallback((messageId: number) => {
@@ -120,14 +65,14 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
       });
   }, []);
 
-  const editMessageFromAnotherUser = React.useCallback((editedMessage: IMessage) => {
+  const editMessage = React.useCallback((editedMessage: IMessage) => {
     setMessages((prevMessages) =>
       prevMessages.map((message) => {
         console.log(message, editedMessage);
 
         if (editedMessage.id === message.id) {
           console.log('hello');
-          
+
           return {
             ...editedMessage,
             datetime: new Date(editedMessage.datetime),
@@ -139,16 +84,15 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
   }, []);
 
   React.useEffect(() => {
-    socket?.on('message_has_been_edited', editMessageFromAnotherUser);
+    socket?.on('message_has_been_edited', editMessage);
 
     return () => {
-      socket?.off('message_has_been_edited', editMessageFromAnotherUser);
+      socket?.off('message_has_been_edited', editMessage);
     };
-  }, [editMessageFromAnotherUser, socket]);
+  }, [editMessage, socket]);
 
   return (
-    <MessagesContext.Provider
-      value={{ messages, createNewMessage, editMessage, startEditingMessage, stopEditingMessage, deleteMessage }}>
+    <MessagesContext.Provider value={{ messages, createNewMessage, sendEditMessageSignal, deleteMessage }}>
       {children}
     </MessagesContext.Provider>
   );

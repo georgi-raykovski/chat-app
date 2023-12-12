@@ -34,11 +34,10 @@ export const ChatMessageEditor = ({ createNewMessage, messagesLength }: IChatMes
       },
     };
 
-    createNewMessage(newMessage);
     await socket?.emit('create_message', newMessage);
 
     setTextareaValue('');
-  }, [createNewMessage, messagesLength, socket, textareaValue, username]);
+  }, [messagesLength, socket, textareaValue, username]);
 
   const onEnter = useEnterPress(onClickHandler);
 

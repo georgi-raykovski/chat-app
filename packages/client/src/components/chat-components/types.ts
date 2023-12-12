@@ -5,7 +5,6 @@ export interface IMessage {
   content: string;
   state: {
     hasBeenDeleted: boolean;
-    isBeingEdited: boolean;
     hasBeenEdited: boolean;
   }
 }

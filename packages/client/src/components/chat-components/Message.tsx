@@ -29,9 +29,12 @@ export const Message = (props: IMessageProps) => {
 
   const onDiscardEditHandler = React.useCallback(() => {
     stopEditingMessage(idx);
-  }, [idx, stopEditingMessage]);
+    setMessageContent(content)
+  }, [content, idx, stopEditingMessage]);
 
   const onFinishEditHandler = React.useCallback(() => {
+    if(!messageContent) return;
+
     editMessage(idx, messageContent);
   }, [editMessage, idx, messageContent]);
 

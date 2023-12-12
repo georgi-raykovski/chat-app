@@ -85,6 +85,7 @@ export const MessagesProvider = ({ children }: IMessagesProviderProps) => {
       const updatedMessages = [...prevMessages];
       updatedMessages[messageIdx] = {
         ...updatedMessages[messageIdx],
+        datetime: new Date(),
         content: 'This message has been deleted.',
         state: {
           ...updatedMessages[messageIdx].state,

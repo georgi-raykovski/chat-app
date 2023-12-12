@@ -3,6 +3,7 @@ import { useUsername } from '../components';
 
 const USER_LOGGED_IN_KEY = 'userLoggedIn';
 export const USERNAME_KEY = 'username';
+const LOGIN_URL = 'http://localhost:3001/users/login';
 
 const getInitialLoggedInState = (): boolean => {
   const userLoggedIn = localStorage.getItem(USER_LOGGED_IN_KEY) === 'true' ? true : false;
@@ -13,12 +14,27 @@ export const useAuth = () => {
   const { username, setUsername } = useUsername();
   const [isUserLoggedIn, setIsUserLoggedIn] = React.useState<boolean>(getInitialLoggedInState);
 
-  const login = React.useCallback((value: string) => {    
-    setUsername(value);
-    setIsUserLoggedIn(true);
-    localStorage.setItem(USER_LOGGED_IN_KEY, 'true');
-    localStorage.setItem(USERNAME_KEY, value);
-  }, [setUsername]);
+  const login = React.useCallback(
+    (value: string) => {
+      setUsername(value);
+      setIsUserLoggedIn(true);
+      localStorage.setItem(USER_LOGGED_IN_KEY, 'true');
+      localStorage.setItem(USERNAME_KEY, value);
+
+      try {
+        fetch(LOGIN_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username: value }),
+        });
+      } catch (error) {
+        console.error('Error during signup:', error);
+      }
+    },
+    [setUsername]
+  );
 
   const logout = React.useCallback(() => {
     setUsername('');

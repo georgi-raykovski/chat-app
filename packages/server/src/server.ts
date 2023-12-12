@@ -11,12 +11,14 @@ import {
   ServerToClientEventsEnum,
 } from '../../client';
 
+const CLIENT_ORIGIN = 'http://localhost:3000';
+
 const app = express();
 const server = http.createServer(app);
 const port = 3001;
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: CLIENT_ORIGIN,
     methods: ['GET', 'POST', 'PUT'],
   },
 });

@@ -20,7 +20,7 @@ export const Message = (props: IMessageProps) => {
   const { username: currentUser } = useUsername();
   const { sendEditMessageSignal, sendDeleteMessageSignal } = useMessages();
 
-  const [messageContent, setMessageContent] = React.useState(content);
+  const [controlledContent, setControlledContent] = React.useState(content);
   const [isBeingEdited, setIsBeingEdited] = React.useState(false);
 
   const isFromCurrentUser = currentUser === username;
@@ -32,19 +32,19 @@ export const Message = (props: IMessageProps) => {
 
   const onDiscardEditHandler = React.useCallback(() => {
     setIsBeingEdited(false);
-    setMessageContent(content);
+    setControlledContent(content);
   }, [content]);
 
   const onFinishEditHandler = React.useCallback(() => {
-    if (!messageContent) return;
-    if (messageContent === content) {
+    if (!controlledContent) return;
+    if (controlledContent === content) {
       setIsBeingEdited(false);
       return;
     }
 
-    sendEditMessageSignal(id, messageContent);
+    sendEditMessageSignal(id, controlledContent);
     setIsBeingEdited(false);
-  }, [content, sendEditMessageSignal, id, messageContent]);
+  }, [content, sendEditMessageSignal, id, controlledContent]);
 
   const onEnter = useEnterPress(onFinishEditHandler);
 
@@ -53,7 +53,7 @@ export const Message = (props: IMessageProps) => {
   }, [sendDeleteMessageSignal, id]);
 
   const onChangeInputHandler = React.useCallback((value: string) => {
-    setMessageContent(value);
+    setControlledContent(value);
   }, []);
 
   React.useEffect(() => {
@@ -78,7 +78,7 @@ export const Message = (props: IMessageProps) => {
       )}
       <MessageBody>
         <MessageContent
-          controlledContent={messageContent}
+          controlledContent={controlledContent}
           hasBeenDeleted={hasBeenDeleted}
           initialContent={content}
           inputRef={inputRef}

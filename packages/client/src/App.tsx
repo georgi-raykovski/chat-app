@@ -1,32 +1,16 @@
 import React from 'react';
-import { LoginForm, Chat, MainContainer, MessagesProvider, SocketProvider } from './components';
-import { GlobalStyles } from './styles';
-import { ThemeProvider } from 'styled-components';
+import { LoginForm, Chat } from './components';
 import { useTheme, useAuth } from './hooks';
-import { io } from 'socket.io-client';
-
-const socket = io('http://localhost:3001');
 
 const App = () => {
   const { isUserLoggedIn, login, logout } = useAuth();
-  const { currentTheme, onThemeSwitchHandler } = useTheme();
-
-  socket.on('connect', () => {
-    console.log('Connected to the server');
-  });
+  const { onThemeSwitchHandler } = useTheme();
 
   return (
-    <ThemeProvider theme={currentTheme}>
-      <SocketProvider>
-        <MessagesProvider>
-          <MainContainer>
-            <GlobalStyles />
-            {!isUserLoggedIn && <LoginForm loginClickHandler={login} switchTheme={onThemeSwitchHandler} />}
-            {isUserLoggedIn && <Chat logoutClickHandler={logout} switchTheme={onThemeSwitchHandler} />}
-          </MainContainer>
-        </MessagesProvider>
-      </SocketProvider>
-    </ThemeProvider>
+    <>
+      {!isUserLoggedIn && <LoginForm loginClickHandler={login} switchTheme={onThemeSwitchHandler} />}
+      {isUserLoggedIn && <Chat logoutClickHandler={logout} switchTheme={onThemeSwitchHandler} />}
+    </>
   );
 };
 

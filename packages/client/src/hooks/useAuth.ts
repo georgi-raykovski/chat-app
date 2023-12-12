@@ -16,12 +16,12 @@ export const useAuth = () => {
 
   const login = React.useCallback(
     (value: string) => {
-      setUsername(value);
-      setIsUserLoggedIn(true);
-      localStorage.setItem(USER_LOGGED_IN_KEY, 'true');
-      localStorage.setItem(USERNAME_KEY, value);
-
       try {
+        setUsername(value);
+        setIsUserLoggedIn(true);
+        localStorage.setItem(USER_LOGGED_IN_KEY, 'true');
+        localStorage.setItem(USERNAME_KEY, value);
+
         fetch(LOGIN_URL, {
           method: 'POST',
           headers: {

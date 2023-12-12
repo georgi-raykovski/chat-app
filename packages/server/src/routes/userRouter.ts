@@ -8,6 +8,6 @@ const { login, getUserById } = userController;
 
 userRouter.post('/login', login);
 
-userRouter.get('/', (req, res) => res.send(usersData));
+userRouter.get('/', (_req, res) => res.send(usersData));
 
 userRouter.get('/:id', getUserById);

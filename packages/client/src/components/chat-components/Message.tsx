@@ -17,7 +17,7 @@ export const Message = (props: IMessageProps) => {
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
   const { username: currentUser } = useUsername();
-  const { sendEditMessageSignal, deleteMessage } = useMessages();
+  const { sendEditMessageSignal, sendDeleteMessageSignal } = useMessages();
 
   const [messageContent, setMessageContent] = React.useState(content);
   const [isBeingEdited, setIsBeingEdited] = React.useState(false);
@@ -48,8 +48,8 @@ export const Message = (props: IMessageProps) => {
   const onEnter = useEnterPress(onFinishEditHandler);
 
   const onDeleteClickHandler = React.useCallback(() => {
-    deleteMessage(id);
-  }, [deleteMessage, id]);
+    sendDeleteMessageSignal(id);
+  }, [sendDeleteMessageSignal, id]);
 
   const onChangeInputHandler = React.useCallback((value: string) => {
     setMessageContent(value);

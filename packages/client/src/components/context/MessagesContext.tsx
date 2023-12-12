@@ -6,13 +6,13 @@ import { useSocket } from './SocketContext';
 interface IMessagesContext {
   messages: IMessage[];
   sendEditMessageSignal: (messageId: number, newContent: string) => void;
-  deleteMessage: (messageId: number) => void;
+  sendDeleteMessageSignal: (messageId: number) => void;
 }
 
 const defaultMessagesContextValue: IMessagesContext = {
   messages: [],
   sendEditMessageSignal: (messageId) => {},
-  deleteMessage: (messageId) => {},
+  sendDeleteMessageSignal: (messageId) => {},
 };
 
 const MessagesContext = React.createContext(defaultMessagesContextValue);
@@ -28,25 +28,12 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
     [socket]
   );
 
-  const deleteMessage = React.useCallback((messageId: number) => {
-    setMessages((prevMessages: IMessage[]) => {
-      const updatedMessages = prevMessages.map((message) =>
-        message.id === messageId
-          ? {
-              ...message,
-              datetime: new Date(),
-              content: 'This message has been deleted.',
-              state: {
-                ...message.state,
-                hasBeenDeleted: true,
-              },
-            }
-          : message
-      );
-
-      return updatedMessages;
-    });
-  }, []);
+  const sendDeleteMessageSignal = React.useCallback(
+    async (messageId: number) => {
+      await socket?.emit('delete_message', messageId);
+    },
+    [socket]
+  );
 
   React.useEffect(() => {
     fetch('http://localhost:3001/messages')
@@ -74,10 +61,10 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
   }, []);
 
   React.useEffect(() => {
-    socket?.on('message_has_been_edited', editMessage);
+    socket?.on('message_edited', editMessage);
 
     return () => {
-      socket?.off('message_has_been_edited', editMessage);
+      socket?.off('message_edited', editMessage);
     };
   }, [editMessage, socket]);
 
@@ -93,8 +80,30 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
     };
   }, [handleNewMessage, socket]);
 
+  const deleteMessage = React.useCallback((deletedMessage: IMessage) => {
+    setMessages((prevMessages) =>
+      prevMessages.map((message) => {
+        if (deletedMessage.id === message.id) {
+          return {
+            ...deletedMessage,
+            datetime: new Date(deletedMessage.datetime),
+          };
+        }
+        return message;
+      })
+    );
+  }, []);
+
+  React.useEffect(() => {
+    socket?.on('message_deleted', deleteMessage);
+
+    return () => {
+      socket?.off('message_deleted', deleteMessage);
+    };
+  });
+
   return (
-    <MessagesContext.Provider value={{ messages, sendEditMessageSignal, deleteMessage }}>
+    <MessagesContext.Provider value={{ messages, sendEditMessageSignal, sendDeleteMessageSignal }}>
       {children}
     </MessagesContext.Provider>
   );

@@ -36,7 +36,18 @@ io.on('connection', (socket) => {
     editedMessage.state.hasBeenEdited = true;
     editedMessage.datetime = new Date();
 
-    io.emit('message_has_been_edited', { ...editedMessage });
+    io.emit('message_edited', { ...editedMessage });
+  });
+
+  socket.on('delete_message', (messageId: string) => {
+    const deletedMessageIndex = messages.findIndex((message) => message.id === parseInt(messageId));
+    const deletedMessage = messages[deletedMessageIndex];
+
+    deletedMessage.content = 'This message has been deleted.';
+    deletedMessage.state.hasBeenDeleted = true;
+    deletedMessage.datetime = new Date();
+
+    io.emit('message_deleted', { ...deletedMessage });
   });
 });
 

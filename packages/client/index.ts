@@ -1,1 +1,1 @@
-export { IMessage } from './src';
+export { IMessage } from './src/components';

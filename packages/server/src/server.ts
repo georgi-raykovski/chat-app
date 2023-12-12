@@ -3,7 +3,7 @@ import cors from 'cors';
 import { Server } from 'socket.io';
 import http from 'http';
 import { messagesRouter, userRouter } from './routes';
-import { IMessage } from '../../client/src/components/chat-components/types';
+import { IMessage } from '../../client';
 
 const app = express();
 const server = http.createServer(app);
@@ -35,8 +35,6 @@ io.on('connection', (socket) => {
     editedMessage.content = newContent;
     editedMessage.state.hasBeenEdited = true;
     editedMessage.datetime = new Date();
-
-    console.log(messages[editedMessageIndex]);
 
     socket.broadcast.emit('message_has_been_edited', { ...editedMessage });
   });

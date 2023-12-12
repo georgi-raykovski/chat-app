@@ -3,7 +3,7 @@ import cors from 'cors';
 import { Server } from 'socket.io';
 import http from 'http';
 import { messagesRouter, userRouter } from './routes';
-import { IMessage } from '../../client';
+import { IMessage } from '../../client/src/components/chat-components/types';
 
 const app = express();
 const server = http.createServer(app);

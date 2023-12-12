@@ -13,7 +13,7 @@ interface IChatProps {
 export const Chat = ({ logoutClickHandler, switchTheme }: IChatProps) => {
   const { messages, createNewMessage } = useMessages();
   const chatBodyRef = React.useRef<ChatBodyRefType>(null);
-
+    
   const onLogOutClick = () => {
     logoutClickHandler();
   };
@@ -26,7 +26,7 @@ export const Chat = ({ logoutClickHandler, switchTheme }: IChatProps) => {
     <ChatContainer>
       <ChatHeader onLogOutClick={onLogOutClick} switchTheme={switchTheme} />
       <ChatBody messages={messages} containerRef={chatBodyRef} />
-      <ChatMessageEditor createNewMessage={createNewMessage} />
+      <ChatMessageEditor createNewMessage={createNewMessage} messagesLength={messages.length}/>
     </ChatContainer>
   );
 };

@@ -49,7 +49,7 @@ const messagesMapper = (message: IMessage, idx: number, messagesArray: IMessage[
     ...(includeZIdx ? { zIdx: messagesArray.length - idx } : {}),
   };
 
-  return <Message key={idx} {...message} {...additionalProps} idx={idx}/>;
+  return <Message key={idx} {...message} {...additionalProps} />;
 };
 
 export const ChatBody = ({ messages, containerRef }: IChatBodyProps) => {

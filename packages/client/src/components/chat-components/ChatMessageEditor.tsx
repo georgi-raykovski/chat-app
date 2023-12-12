@@ -6,9 +6,10 @@ import { useEnterPress } from '../../hooks';
 
 interface IChatMessageEditorProps {
   createNewMessage: (message: IMessage) => void;
+  messagesLength: number;
 }
 
-export const ChatMessageEditor = ({ createNewMessage }: IChatMessageEditorProps) => {
+export const ChatMessageEditor = ({ createNewMessage, messagesLength }: IChatMessageEditorProps) => {
   const [textareaValue, setTextareaValue] = React.useState<string>('');
   const { username } = useUsername();
 
@@ -20,6 +21,7 @@ export const ChatMessageEditor = ({ createNewMessage }: IChatMessageEditorProps)
     if (!textareaValue) return;
 
     createNewMessage({
+      id: messagesLength + 1,
       content: textareaValue,
       datetime: new Date(),
       username,
@@ -31,7 +33,7 @@ export const ChatMessageEditor = ({ createNewMessage }: IChatMessageEditorProps)
     });
 
     setTextareaValue('');
-  }, [createNewMessage, textareaValue, username]);
+  }, [createNewMessage, messagesLength, textareaValue, username]);
 
   const onEnter = useEnterPress(onClickHandler);
 

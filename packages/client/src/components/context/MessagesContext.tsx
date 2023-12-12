@@ -4,19 +4,19 @@ import { IMessage } from '../chat-components';
 interface IMessagesContext {
   messages: IMessage[];
   createNewMessage: (newMessage: IMessage) => void;
-  editMessage: (messageIndex: number, newContent: string) => void;
-  startEditingMessage: (messageIndex: number) => void;
-  stopEditingMessage: (messageIndex: number) => void;
-  deleteMessage: (messageIndex: number) => void;
+  editMessage: (messageId: number, newContent: string) => void;
+  startEditingMessage: (messageId: number) => void;
+  stopEditingMessage: (messageId: number) => void;
+  deleteMessage: (messageId: number) => void;
 }
 
 const defaultMessagesContextValue: IMessagesContext = {
   messages: [],
   createNewMessage: (newMessage) => {},
-  editMessage: (messageIndex) => {},
-  startEditingMessage: (messageIndex) => {},
-  stopEditingMessage: (messageIndex) => {},
-  deleteMessage: (messageIndex) => {},
+  editMessage: (messageId) => {},
+  startEditingMessage: (messageId) => {},
+  stopEditingMessage: (messageId) => {},
+  deleteMessage: (messageId) => {},
 };
 
 const MessagesContext = React.createContext(defaultMessagesContextValue);
@@ -32,66 +32,74 @@ export const MessagesProvider = ({ children }: IMessagesProviderProps) => {
     setMessages((prevValue) => [...prevValue, message]);
   }, []);
 
-  const editMessage = React.useCallback((messageIdx: number, newContent: string) => {
+  const editMessage = React.useCallback((messageId: number, newContent: string) => {
     setMessages((prevMessages: IMessage[]) => {
-      const updatedMessages = [...prevMessages];
-      updatedMessages[messageIdx] = {
-        ...updatedMessages[messageIdx],
-        datetime: new Date(),
-        content: newContent,
-        state: {
-          ...updatedMessages[messageIdx].state,
-          hasBeenEdited: true,
-          isBeingEdited: false,
-        },
-      };
+      const updatedMessages = prevMessages.map((message) =>
+        message.id === messageId
+          ? {
+              ...message,
+              datetime: new Date(),
+              content: newContent,
+              state: {
+                ...message.state,
+                hasBeenEdited: true,
+                isBeingEdited: false,
+              },
+            }
+          : message
+      );
 
       return updatedMessages;
     });
   }, []);
 
-  const startEditingMessage = React.useCallback((messageIdx: number) => {
+  const setEditingStateOfMessage = React.useCallback((messageId: number, state: boolean) => {
     setMessages((prevMessages: IMessage[]) => {
-      const updatedMessages = [...prevMessages];
-      updatedMessages[messageIdx] = {
-        ...updatedMessages[messageIdx],
-        state: {
-          ...updatedMessages[messageIdx].state,
-          isBeingEdited: true,
-        },
-      };
+      const updatedMessages = prevMessages.map((message) =>
+        message.id === messageId
+          ? {
+              ...message,
+              state: {
+                ...message.state,
+                isBeingEdited: state,
+              },
+            }
+          : message
+      );
 
       return updatedMessages;
     });
   }, []);
 
-  const stopEditingMessage = React.useCallback((messageIdx: number) => {
-    setMessages((prevMessages: IMessage[]) => {
-      const updatedMessages = [...prevMessages];
-      updatedMessages[messageIdx] = {
-        ...updatedMessages[messageIdx],
-        state: {
-          ...updatedMessages[messageIdx].state,
-          isBeingEdited: false,
-        },
-      };
+  const startEditingMessage = React.useCallback(
+    (messageId: number) => {
+      setEditingStateOfMessage(messageId, true);
+    },
+    [setEditingStateOfMessage]
+  );
 
-      return updatedMessages;
-    });
-  }, []);
+  const stopEditingMessage = React.useCallback(
+    (messageId: number) => {
+      setEditingStateOfMessage(messageId, false);
+    },
+    [setEditingStateOfMessage]
+  );
 
-  const deleteMessage = React.useCallback((messageIdx: number) => {
+  const deleteMessage = React.useCallback((messageId: number) => {
     setMessages((prevMessages: IMessage[]) => {
-      const updatedMessages = [...prevMessages];
-      updatedMessages[messageIdx] = {
-        ...updatedMessages[messageIdx],
-        datetime: new Date(),
-        content: 'This message has been deleted.',
-        state: {
-          ...updatedMessages[messageIdx].state,
-          hasBeenDeleted: true,
-        },
-      };
+      const updatedMessages = prevMessages.map((message) =>
+        message.id === messageId
+          ? {
+              ...message,
+              datetime: new Date(),
+              content: 'This message has been deleted.',
+              state: {
+                ...message.state,
+                hasBeenDeleted: true,
+              },
+            }
+          : message
+      );
 
       return updatedMessages;
     });

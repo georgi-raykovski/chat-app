@@ -21,6 +21,8 @@ export const StyledMessage = styled.div<StyledMessageProps>`
       if ($isBeingEdited) return '#1a8ec1';
       return $isFromCurrentUser ? '#1a82fd' : '#888888';
     }};
+
+    text-align: ${({ $isFromCurrentUser }) => ($isFromCurrentUser ? 'left' : 'right')};
   }
 
   @media (min-width: 400px) {

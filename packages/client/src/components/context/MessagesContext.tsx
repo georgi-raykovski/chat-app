@@ -5,14 +5,12 @@ import { useSocket } from './SocketContext';
 
 interface IMessagesContext {
   messages: IMessage[];
-  createNewMessage: (newMessage: IMessage) => void;
   sendEditMessageSignal: (messageId: number, newContent: string) => void;
   deleteMessage: (messageId: number) => void;
 }
 
 const defaultMessagesContextValue: IMessagesContext = {
   messages: [],
-  createNewMessage: (newMessage) => {},
   sendEditMessageSignal: (messageId) => {},
   deleteMessage: (messageId) => {},
 };
@@ -22,10 +20,6 @@ const MessagesContext = React.createContext(defaultMessagesContextValue);
 export const MessagesProvider = ({ children }: IProviderProps) => {
   const [messages, setMessages] = React.useState<IMessage[]>([]);
   const socket = useSocket();
-
-  const createNewMessage = React.useCallback((message: IMessage) => {
-    setMessages((prevValue) => [...prevValue, message]);
-  }, []);
 
   const sendEditMessageSignal = React.useCallback(
     async (messageId: number, newContent: string) => {
@@ -68,11 +62,7 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
   const editMessage = React.useCallback((editedMessage: IMessage) => {
     setMessages((prevMessages) =>
       prevMessages.map((message) => {
-        console.log(message, editedMessage);
-
         if (editedMessage.id === message.id) {
-          console.log('hello');
-
           return {
             ...editedMessage,
             datetime: new Date(editedMessage.datetime),
@@ -91,8 +81,20 @@ export const MessagesProvider = ({ children }: IProviderProps) => {
     };
   }, [editMessage, socket]);
 
+  const handleNewMessage = React.useCallback((newMessage: IMessage) => {
+    setMessages((prevValue) => [...prevValue, { ...newMessage, datetime: new Date(newMessage.datetime) }]);
+  }, []);
+
+  React.useEffect(() => {
+    socket?.on('receive_message', handleNewMessage);
+
+    return () => {
+      socket?.off('receive_message', handleNewMessage);
+    };
+  }, [handleNewMessage, socket]);
+
   return (
-    <MessagesContext.Provider value={{ messages, createNewMessage, sendEditMessageSignal, deleteMessage }}>
+    <MessagesContext.Provider value={{ messages, sendEditMessageSignal, deleteMessage }}>
       {children}
     </MessagesContext.Provider>
   );

@@ -1,16 +1,14 @@
 import React from 'react';
-import { IMessage } from './types';
 import { Button, ChatMessageEditorContainer, TextBox } from '../../styles';
 import { useUsername } from '../context';
 import { useEnterPress } from '../../hooks';
 import { useSocket } from '../context/SocketContext';
 
 interface IChatMessageEditorProps {
-  createNewMessage: (message: IMessage) => void;
   messagesLength: number;
 }
 
-export const ChatMessageEditor = ({ createNewMessage, messagesLength }: IChatMessageEditorProps) => {
+export const ChatMessageEditor = ({ messagesLength }: IChatMessageEditorProps) => {
   const socket = useSocket();
   const [textareaValue, setTextareaValue] = React.useState<string>('');
   const { username } = useUsername();

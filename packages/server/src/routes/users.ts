@@ -1,6 +1,3 @@
-export interface IUser {
-  username: string;
-  id: number;
-}
+import { User } from '../factories';
 
-export const usersData: IUser[] = [];
+export const usersData: User[] = [];

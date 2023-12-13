@@ -3,6 +3,9 @@ import { IMessage } from '../components';
 
 export type ClientSocketType = Socket<ServerToClientEvents, ClientToServerEvents>;
 
+// Could not get around the create-react-app restrictions on importing outside of src
+// So I had to define these in the client to be able to import them in the server
+
 export enum ServerToClientEventsEnum {
   RECEIVE_MESSAGE_EVENT = 'receive_message',
   MESSAGE_EDITED_EVENT = 'message_edited',
